@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(OrganizationSeeder::class);
+        $this->call(TeamSeeder::class);
+        $this->call(EmployeeSeeder::class);
     }
 }

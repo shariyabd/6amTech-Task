@@ -12,89 +12,96 @@ class EmployeeController extends BaseController
 {
     public function index(Request $request)
     {
-        $query = Employee::with('team');
+        $query = Employee::with(['team', 'organization']);
 
-        // Optional filtering by team
+        //filter by start date
+        if ($request->has('start_date')) {
+            $query->startDate($request->start_date);
+        }
+
+        // filter by team
         if ($request->has('team_id')) {
             $query->where('team_id', $request->team_id);
         }
 
-        // Optional date range filtering
-        if ($request->has('start_date_from')) {
-            $query->where('start_date', '>=', $request->start_date_from);
+        //filter by organization
+        if ($request->has('organization_id')) {
+            $query->where('organization_id', $request->organization_id);
         }
 
-        if ($request->has('start_date_to')) {
-            $query->where('start_date', '<=', $request->start_date_to);
-        }
+        $per_page   = $request->per_page ?? 15;
+        $result     =  $query->paginate($per_page);
 
-        // Optional position filtering
-        if ($request->has('position')) {
-            $query->where('position', $request->position);
-        }
-
-        // Sorting
-        $sortField = $request->input('sort_by', 'id');
-        $sortDirection = $request->input('sort_direction', 'asc');
-        $allowedSortFields = ['id', 'name', 'salary', 'start_date', 'position'];
-
-        if (in_array($sortField, $allowedSortFields)) {
-            $query->orderBy($sortField, $sortDirection);
-        }
-
-        $employees = $query->paginate($request->input('per_page', 10));
-
-        return $this->sendResponse($employees->toArray(), 'Employees retrieved successfully');
+        return $this->sendResponse($result->toArray(), "Employee List");
     }
 
     /**
-     * Store or update the resource in storage.
+     * Store a newly created employee.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function save(EmployeeRequest $request,  $id = null)
+    public function store(Request $request)
     {
-        if ($id) {
-            $employee = Employee::find($id);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:employees,email',
+            'team_id' => 'required|exists:teams,id',
+            'organization_id' => 'required|exists:organizations,id',
+            'salary' => 'required|numeric|min:0',
+            'start_date' => 'required|date'
+        ]);
 
-            if (!$employee) {
-                return $this->sendError('Employee not found');
-            }
-            $employee->update($request->validated());
-            $message = 'Employee updated successfully';
-        } else {
-            $employee = Employee::create($request->validated());
-            $message = 'Employee created successfully';
-        }
+        $employee = Employee::create($validated);
 
-        return $this->sendResponse($employee->toArray(), $message);
+        return (new EmployeeResource($employee))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified employee.
+     *
+     * @param int $id
      */
-    public function show(string $id)
+    public function show($id)
     {
-        $employee = Employee::with('team')->find($id);
-
-        if (!$employee) {
-            return $this->sendError('Employee not found');
-        }
-
-        return $this->sendResponse($employee->toArray(), 'Employee retrieved successfully');
+        $employee = Employee::with(['team', 'organization'])->findOrFail($id);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified employee.
+     *
+     * @param Request $request
+     * @param int $id
      */
-    public function destroy(string $id)
+    public function update(Request $request, $id)
     {
-        $employee = Employee::find($id);
+        $employee = Employee::findOrFail($id);
 
-        if (!$employee) {
-            return $this->sendError('Employee not found');
-        }
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:employees,email,' . $id,
+            'team_id' => 'sometimes|exists:teams,id',
+            'organization_id' => 'sometimes|exists:organizations,id',
+            'salary' => 'sometimes|numeric|min:0',
+            'start_date' => 'sometimes|date'
+        ]);
 
+        $employee->update($validated);
+    }
+
+    /**
+     * Remove the specified employee.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
+    {
+        $employee = Employee::findOrFail($id);
         $employee->delete();
 
-        return $this->sendResponse(null, 'Employee deleted successfully');
+        return response()->json(null, 204);
     }
 }

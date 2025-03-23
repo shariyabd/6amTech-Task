@@ -11,7 +11,7 @@ class EmployeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,17 +21,11 @@ class EmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
-        $employeeId = $this->route('id');
-        $emailRule = 'required|email|max:255|unique:employees,email';
 
-        // If it's an update, exclude the current employee from unique validation
-        if ($employeeId) {
-            $emailRule .= ',' . $employeeId;
-        }
 
         return [
             'name' => 'required|string|max:255',
-            'email' => $emailRule,
+            'email' => 'required',
             'team_id' => 'required|exists:teams,id',
             'salary' => 'required|numeric|min:0',
             'start_date' => 'required|date',

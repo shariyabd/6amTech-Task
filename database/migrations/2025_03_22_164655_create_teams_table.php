@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('organization_id')->constrained()->onDelete('cascade');
             $table->string('department')->nullable();
             $table->timestamps();
+            
         });
     }
 

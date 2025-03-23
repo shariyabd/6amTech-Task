@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
 
+    use HasFactory;
     protected $fillable = [
         'name',
         'email',
         'team_id',
+        'organization_id',
         'salary',
         'start_date',
         'position',
@@ -23,8 +26,9 @@ class Employee extends Model
      */
     protected $casts = [
         'start_date' => 'date',
-        'salary' => 'decimal:2',
+        'salary' => 'float',
     ];
+
     public function team()
     {
         return $this->belongsTo(Team::class);
@@ -32,12 +36,16 @@ class Employee extends Model
 
     public function organization()
     {
-        return $this->team->organization();
+        return $this->belongsTo(Organization::class);
     }
+    // public function organization()
+    // {
+    //     return $this->team->organization();
+    // }
 
 
-    public function scopeStartedBetween($query, $startDate, $endDate)
+    public function scopeStartDate($query, $start_date)
     {
-        return $query->whereBetween('start_date', [$startDate, $endDate]);
+        return $query->where('start_date', $start_date);
     }
 }

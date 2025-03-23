@@ -16,13 +16,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->foreignId('organization_id')->constrained()->onDelete('cascade');
             $table->decimal('salary', 10, 2);
             $table->date('start_date');
             $table->string('position')->nullable();
             $table->timestamps();
 
-
+            $table->index('salary');
             $table->index('start_date');
+            $table->index('team_id');
+            $table->index('organization_id');
         });
     }
 

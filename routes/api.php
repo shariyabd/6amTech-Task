@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\TeamController;
+use App\Http\Controllers\Api\v1\ReportController;
 use App\Http\Controllers\Api\v1\EmployeeController;
 use App\Http\Controllers\Api\v1\Auth\AuthController;
 use App\Http\Controllers\Api\v1\OrganizationController;
@@ -36,7 +37,21 @@ Route::prefix('v1')->group(function () {
         Route::get('employees', [EmployeeController::class, 'index']);
         Route::get('employee/{id}', [EmployeeController::class, 'show']);
         Route::post('employee', [EmployeeController::class, 'save']);
-        Route::put('employees/{id}', [EmployeeController::class, 'save']);
+        Route::post('employee/{id}', [EmployeeController::class, 'save']);
         Route::delete('employees/{id}', [EmployeeController::class, 'destroy']);
+
+
+
+        // Report endpoints
+        Route::prefix('reports')->group(function () {
+            Route::get('teams/salary', [ReportController::class, 'avg_salery_per_team'])
+                ->name('teams.salary');
+
+            // Organization reports
+            Route::get('organizations/headcount', [ReportController::class, 'employess_per_organization'])->name('organizations.headcount');
+
+            // Route::get('organizations/{id}/detail', [ReportController::class, 'employess_per_organization'])
+            //     ->name('organizations.detail');
+        });
     });
 });
