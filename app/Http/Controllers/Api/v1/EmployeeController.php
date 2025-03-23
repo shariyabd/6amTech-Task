@@ -36,7 +36,6 @@ class EmployeeController extends BaseController
 
             $per_page   = $request->per_page ?? 15;
             $result     =  $query->paginate($per_page);
-
             return $this->sendResponse($result->toArray(), "Employee List");
         } catch (Exception $e) {
             return $this->sendError($e->getMessage());

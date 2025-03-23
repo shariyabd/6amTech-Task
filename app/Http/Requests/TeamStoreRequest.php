@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 
-class TeamRequest extends FormRequest
+class TeamStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,5 +28,14 @@ class TeamRequest extends FormRequest
             'organization_id' => 'required',
             'department' => 'nullable',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator, response()->json([
+            'status'  => false,
+            'message' => 'Validation Error',
+            'errors'  => $validator->errors(),
+        ], 422));
     }
 }

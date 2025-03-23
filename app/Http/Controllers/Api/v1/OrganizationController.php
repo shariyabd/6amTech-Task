@@ -42,7 +42,7 @@ class OrganizationController extends BaseController
         try {
             $organization = Organization::find($id);
             if (!$organization) {
-                $this->sendResponse([], "Organzation Not found");
+                return $this->sendResponse([], "Organzation Not found");
             }
             return $this->sendResponse($organization->toArray(), "Single Organization Data");
         } catch (Exception $e) {
@@ -52,14 +52,17 @@ class OrganizationController extends BaseController
 
     public function update(OrganizationUpdateRequest $request, $id)
     {
-        $organization = Organization::find($id);
-
-        if (!$organization) {
-            return $this->sendResponse([], "Organization Not Found");
+        try {
+            $organization = Organization::find($id);
+            if (!$organization) {
+                return $this->sendResponse([], "Organization Not Found");
+            }
+            $validated = $request->validated();
+            $organization->update($validated);
+            return $this->sendResponse($organization->fresh()->toArray(), "Organization Updated Successfully");
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
         }
-        $validated = $request->validated();
-        $organization->update($validated);
-        return $this->sendResponse($organization->toArray(), "Organization Updated Successfully");
     }
 
 

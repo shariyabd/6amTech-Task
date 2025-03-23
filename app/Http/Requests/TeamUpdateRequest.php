@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Employee;
+use App\Models\Team;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class EmployeeUpdateRequest extends FormRequest
+class TeamUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,26 +23,23 @@ class EmployeeUpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+
     public function rules(): array
     {
-        $employee_id = $this->route('id');
-        $employee = Employee::where('id', $employee_id)->exists();
-        if (!$employee) {
+        $team_id = $this->route('id');
+        $teamExists = Team::where('id', $team_id)->exists();
+        if (!$teamExists) {
             return [];
         }
         return [
-            'name' => 'sometimes|required|string|max:255',
-            'email' => [
-                'sometimes',
+            'name' => [
                 'required',
-                'email',
-                Rule::unique('employees', 'email')->ignore($employee_id)
+                'string',
+                'max:255',
+                Rule::unique('teams', 'name')->ignore($team_id),
             ],
-            'team_id'           => 'sometimes|required|exists:teams,id',
-            'organization_id'   => 'sometimes|required|exists:organizations,id',
-            'salary'            => 'sometimes|required|numeric|min:0',
-            'start_date'        => 'sometimes|required|date',
-            'position'          => 'sometimes|nullable|string',
+            'organization_id' => 'required',
+            'department' => 'nullable',
         ];
     }
 

@@ -30,7 +30,7 @@ Route::prefix('v1')->group(function () {
         Route::get('teams', [TeamController::class, 'index']);
         Route::get('team/{id}', [TeamController::class, 'show']);
         Route::post('team', [TeamController::class, 'store']);
-        Route::post('team/{id}', [TeamController::class, 'store']);
+        Route::patch('team/{id}', [TeamController::class, 'update']);
         Route::delete('team/{id}', [TeamController::class, 'destroy']);
 
 
