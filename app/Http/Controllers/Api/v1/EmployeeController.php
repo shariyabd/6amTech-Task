@@ -2,61 +2,61 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Requests\EmployeeUpdateRequest;
+use Exception;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\EmployeeStoreRequest;
 
 class EmployeeController extends BaseController
 {
     public function index(Request $request)
     {
-        $query = Employee::with(['team', 'organization']);
+        try {
+            $query = Employee::with(['team', 'organization']);
 
-        //filter by start date
-        if ($request->has('start_date')) {
-            $query->startDate($request->start_date);
+            //filter by start date
+            if ($request->has('start_date')) {
+                //scope query start date
+                $query->startDate($request->start_date);
+            }
+
+            // filter by team
+            if ($request->has('team_id')) {
+                $query->where('team_id', $request->team_id);
+            }
+
+            //filter by organization
+            if ($request->has('organization_id')) {
+                $query->where('organization_id', $request->organization_id);
+            }
+
+            $per_page   = $request->per_page ?? 15;
+            $result     =  $query->paginate($per_page);
+
+            return $this->sendResponse($result->toArray(), "Employee List");
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
         }
-
-        // filter by team
-        if ($request->has('team_id')) {
-            $query->where('team_id', $request->team_id);
-        }
-
-        //filter by organization
-        if ($request->has('organization_id')) {
-            $query->where('organization_id', $request->organization_id);
-        }
-
-        $per_page   = $request->per_page ?? 15;
-        $result     =  $query->paginate($per_page);
-
-        return $this->sendResponse($result->toArray(), "Employee List");
     }
 
     /**
      * Store a newly created employee.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(EmployeeStoreRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:employees,email',
-            'team_id' => 'required|exists:teams,id',
-            'organization_id' => 'required|exists:organizations,id',
-            'salary' => 'required|numeric|min:0',
-            'start_date' => 'required|date'
-        ]);
-
-        $employee = Employee::create($validated);
-
-        return (new EmployeeResource($employee))
-            ->response()
-            ->setStatusCode(201);
+        try {
+            $validated  = $request->validated();
+            $employee   = Employee::create($validated);
+            return $this->sendResponse($employee->toArray(), "Employee Created Successfully");
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
     }
 
     /**
@@ -66,7 +66,15 @@ class EmployeeController extends BaseController
      */
     public function show($id)
     {
-        $employee = Employee::with(['team', 'organization'])->findOrFail($id);
+        try {
+            $employee = Employee::with(['team', 'organization'])->find($id);
+            if (!$employee) {
+                return $this->sendResponse([], "Employee Not Found");
+            }
+            return $this->sendResponse($employee->toArray(), "Single Employee Data");
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
     }
 
     /**
@@ -75,20 +83,20 @@ class EmployeeController extends BaseController
      * @param Request $request
      * @param int $id
      */
-    public function update(Request $request, $id)
+    public function update(EmployeeUpdateRequest $request, $id)
     {
-        $employee = Employee::findOrFail($id);
+        try {
+            $employee = Employee::find($id);
+            if (!$employee) {
+                return $this->sendResponse([], "Employee Not Found");
+            }
+            $validated = $request->validated();
+            $employee->update($validated);
 
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:employees,email,' . $id,
-            'team_id' => 'sometimes|exists:teams,id',
-            'organization_id' => 'sometimes|exists:organizations,id',
-            'salary' => 'sometimes|numeric|min:0',
-            'start_date' => 'sometimes|date'
-        ]);
-
-        $employee->update($validated);
+            return $this->sendResponse($employee->fresh()->toArray(), "Employee Updated Successfully");
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
     }
 
     /**
@@ -99,9 +107,15 @@ class EmployeeController extends BaseController
      */
     public function destroy($id)
     {
-        $employee = Employee::findOrFail($id);
-        $employee->delete();
-
-        return response()->json(null, 204);
+        try {
+            $employee = Employee::find($id);
+            if (!$employee) {
+                return $this->sendResponse([], "Employee Not Found");
+            }
+            $employee->delete();
+            return $this->sendResponse([], "Employee has been deleted");
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
     }
 }

@@ -19,11 +19,12 @@ Route::prefix('v1')->group(function () {
         });
     });
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('organization-store', [OrganizationController::class, 'store']);
-        Route::post('organization-update/{id}', [OrganizationController::class, 'update'])->name('organization.update');
+
         Route::get('organizations', [OrganizationController::class, 'index']);
-        Route::get('organization-show/{id}', [OrganizationController::class, 'show']);
-        Route::post('organization-delete/{id}', [OrganizationController::class, 'destroy']);
+        Route::post('organization', [OrganizationController::class, 'store']);
+        Route::patch('organization/{id}', [OrganizationController::class, 'update']);
+        Route::get('organization/{id}', [OrganizationController::class, 'show']);
+        Route::delete('organization/{id}', [OrganizationController::class, 'destroy']);
 
 
         Route::get('teams', [TeamController::class, 'index']);
@@ -36,9 +37,9 @@ Route::prefix('v1')->group(function () {
 
         Route::get('employees', [EmployeeController::class, 'index']);
         Route::get('employee/{id}', [EmployeeController::class, 'show']);
-        Route::post('employee', [EmployeeController::class, 'save']);
-        Route::post('employee/{id}', [EmployeeController::class, 'save']);
-        Route::delete('employees/{id}', [EmployeeController::class, 'destroy']);
+        Route::post('employee', [EmployeeController::class, 'store']);
+        Route::patch('employee/{id}', [EmployeeController::class, 'update']);
+        Route::delete('employee/{id}', [EmployeeController::class, 'destroy']);
 
 
 

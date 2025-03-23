@@ -31,12 +31,12 @@ class Employee extends Model
 
     public function team()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class)->selectRaw('id,name,department');
     }
 
     public function organization()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class)->selectRaw('id, name, industry,location');
     }
     // public function organization()
     // {
