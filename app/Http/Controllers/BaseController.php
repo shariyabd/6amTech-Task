@@ -26,6 +26,16 @@ class BaseController extends Controller
         return response()->json($response, $code);
     }
 
+    // public function sendResponse(Model|Collection|array $result, string $message, int $code = 200): JsonResponse
+    // {
+    //     $response = [
+    //         'success' => true,
+    //         'data'    => ($result instanceof Model || $result instanceof Collection) ? $result->toArray() : $result,
+    //         'message' => $message,
+    //     ];
+
+    //     return response()->json($response, $code);
+    // }
     /**
      * Return error response.
      *
