@@ -170,6 +170,7 @@ class OrganizationController extends BaseController
         foreach ($cacheKeys as $key) {
             Cache::forget($key);
         }
+
         Cache::forget('organization_cache_keys');
     }
 }

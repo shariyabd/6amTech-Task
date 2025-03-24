@@ -16,7 +16,7 @@ class Team extends Model
     ];
     public function organization()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class)->selectRaw('id, name, industry,location');
     }
 
     public function employees()
