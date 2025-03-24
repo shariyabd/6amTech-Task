@@ -22,16 +22,11 @@ class Organization extends Model
 
     public function teams()
     {
-        return $this->hasMany(Team::class);
+        return $this->hasMany(Team::class)->select(['id', 'organization_id', 'name']);
     }
-
-    // public function employees()
-    // {
-    //     return $this->hasMany(Employee::class);
-    // }
 
     public function employees()
     {
-        return $this->hasManyThrough(Employee::class, Team::class);
+        return $this->hasManyThrough(Employee::class, Team::class)->select(['employees.id', 'employees.team_id', 'employees.first_name', 'employees.last_name', 'employees.email']);
     }
 }

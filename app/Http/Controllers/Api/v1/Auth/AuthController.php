@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\LoginReqeust;
 use App\Http\Requests\Auth\RegisterRequest;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -21,13 +22,14 @@ class AuthController extends BaseController
      * @param RegisterRequest $request
      * @return JsonResponse
      */
-    public function register(RegisterRequest $request): JsonResponse
+    public function register(RegisterRequest $request)
     {
 
         $validated = $request->validated();
 
         $user = User::create([
             'name'     => $validated['name'],
+            'role_id'  => $validated['role_id'] ?? 2,
             'email'    => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
@@ -53,26 +55,27 @@ class AuthController extends BaseController
      */
     public function login(LoginReqeust $request): JsonResponse
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
 
-        $user = User::where('email', $validated['email'])->first();
+            $user = User::where('email', $validated['email'])->first();
+            if (! $user || ! Hash::check($validated['password'], $user->password)) {
+                return $this->sendError("Invalid Credentials");
+            }
 
-        if (! $user || ! Hash::check($validated['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                ['The provided credentials are incorrect.'],
-            ]);
+            // Token generation
+            $token = $user->createToken('KTrihM/Rxkek5u2ev7e7kBeOXyeIYQSSSGo+IVzJFlY=')->plainTextToken;
+
+            $result = [
+                'access_token' => $token,
+                'token_type'   => 'Bearer',
+                'user'         => $user,
+            ];
+
+            return $this->sendResponse($result, "Login successful");
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
         }
-
-        // Token generation
-        $token = $user->createToken('KTrihM/Rxkek5u2ev7e7kBeOXyeIYQSSSGo+IVzJFlY=')->plainTextToken;
-
-        $result = [
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'user'         => $user,
-        ];
-
-        return $this->sendResponse($result, "Login successful");
     }
 
     /**
@@ -94,13 +97,14 @@ class AuthController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function me(Request $request): JsonResponse
+    public function me(Request $request)
     {
-        $result = [
-            'user' => Auth::user(),
-        ];
-
-        return $this->sendResponse($result, 'User information retrieved successfully');
+        try {
+            $result = Auth::user();
+            return $this->sendResponse($result->toArray(), 'User information retrieved successfully');
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
     }
 
     /**
@@ -112,7 +116,6 @@ class AuthController extends BaseController
     public function refresh(Request $request): JsonResponse
     {
         $user = $request->user();
-
         // Revoke current token
         $request->user()->currentAccessToken()->delete();
 
@@ -124,7 +127,6 @@ class AuthController extends BaseController
             'token_type'   => 'Bearer',
             'user'         => $user,
         ];
-
         return $this->sendResponse($result, 'Token refreshed successfully');
     }
 }

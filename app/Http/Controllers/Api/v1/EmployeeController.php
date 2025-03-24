@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Requests\EmployeeUpdateRequest;
 use Exception;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Reader;
+use Maatwebsite\Excel\Writer;
+use App\Exports\EmployeesExport;
+use App\Imports\EmployeesImport;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\EmployeeStoreRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
+use Faker\Factory as Faker;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class EmployeeController extends BaseController
 {
@@ -117,4 +125,6 @@ class EmployeeController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
+
 }
