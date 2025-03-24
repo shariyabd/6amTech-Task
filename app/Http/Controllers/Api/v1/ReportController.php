@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use Exception;
 use App\Models\Team;
 use App\Models\Organization;
-use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
+
 
 class ReportController extends BaseController
 {
@@ -23,6 +24,7 @@ class ReportController extends BaseController
                         'average_salary' => round($team->employees_avg_salary, 2)
                     ];
                 });
+
             $result = [
                 'teams' => $teams,
                 'summary' => [
@@ -35,7 +37,6 @@ class ReportController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
-
 
     public function employess_per_organization()
     {
