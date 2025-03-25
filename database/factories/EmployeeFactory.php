@@ -20,7 +20,7 @@ class EmployeeFactory extends Factory
 
     public function definition()
     {
-        // random team and its organization
+
         $team = Team::inRandomOrder()->first();
 
         return [

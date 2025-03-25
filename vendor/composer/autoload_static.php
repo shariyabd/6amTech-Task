@@ -88,7 +88,6 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Clock\\' => 24,
-            'Shariya\\PdfGenerator\\' => 21,
         ),
         'R' => 
         array (
@@ -318,10 +317,6 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         'Symfony\\Component\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/clock',
-        ),
-        'Shariya\\PdfGenerator\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/shariya/pdf-generator/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (

@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '981ebf348de4e4e5160b7664a3c16dfee9473ffd',
+        'reference' => '71f10044d61051f20f285ea1eb922f7f12e271f2',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -388,7 +388,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '981ebf348de4e4e5160b7664a3c16dfee9473ffd',
+            'reference' => '71f10044d61051f20f285ea1eb922f7f12e271f2',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -994,17 +994,6 @@
             'install_path' => __DIR__ . '/../sebastian/version',
             'aliases' => array(),
             'dev_requirement' => true,
-        ),
-        'shariya/pdf-generator' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'b62b63c5491fabf8bb8bf3474d24f11485066d30',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../shariya/pdf-generator',
-            'aliases' => array(
-                0 => '9999999-dev',
-            ),
-            'dev_requirement' => false,
         ),
         'spatie/once' => array(
             'dev_requirement' => false,
