@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImportStatistic extends Model
 {
+    public $timestamps = false;
     protected $fillable = [
         'import_id',
         'user_id',

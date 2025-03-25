@@ -88,6 +88,7 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Clock\\' => 24,
+            'Shariya\\PdfGenerator\\' => 21,
         ),
         'R' => 
         array (
@@ -318,6 +319,10 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         array (
             0 => __DIR__ . '/..' . '/symfony/clock',
         ),
+        'Shariya\\PdfGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/shariya/pdf-generator/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -532,10 +537,11 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\GenerateDatabasePerformanceReport' => __DIR__ . '/../..' . '/app/Console/Commands/GenerateDatabasePerformanceReport.php',
+        'App\\Enums\\RoleType' => __DIR__ . '/../..' . '/app/Enums/RoleType.php',
         'App\\Events\\EmployeeImportCompleted' => __DIR__ . '/../..' . '/app/Events/EmployeeImportCompleted.php',
         'App\\Events\\EmployeeImportRequested' => __DIR__ . '/../..' . '/app/Events/EmployeeImportRequested.php',
         'App\\Events\\EmployeeSalaryUpdated' => __DIR__ . '/../..' . '/app/Events/EmployeeSalaryUpdated.php',
-        'App\\Exports\\EmployeesExport' => __DIR__ . '/../..' . '/app/Exports/EmployeesExport.php',
         'App\\Http\\Controllers\\Api\\v1\\Auth\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/v1/Auth/AuthController.php',
         'App\\Http\\Controllers\\Api\\v1\\EmployeeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/v1/EmployeeController.php',
         'App\\Http\\Controllers\\Api\\v1\\OrganizationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/v1/OrganizationController.php',
@@ -571,6 +577,7 @@ class ComposerStaticInit626b9e7ddd47fb7eff9aaa53cce0c9ad
         'App\\Notifications\\ImportProgress' => __DIR__ . '/../..' . '/app/Notifications/ImportProgress.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\TelescopeServiceProvider' => __DIR__ . '/../..' . '/app/Providers/TelescopeServiceProvider.php',
+        'App\\Services\\PerformanceMonitor' => __DIR__ . '/../..' . '/app/Services/PerformanceMonitor.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',

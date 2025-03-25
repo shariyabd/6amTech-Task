@@ -39,48 +39,56 @@ class HandleImportCompletion implements ShouldQueue
 
         Log::info("Import completed successfully", [
             'import_job_id' => $importJob->id,
-            'processed' => $importJob->processed_records,
-            'failed' => $importJob->failed_records
+            'processed'     => $importJob->processed_records,
+            'failed'        => $importJob->failed_records
         ]);
 
-        // 1. Generate import summary statistics
+        //Generate import summary statistics
         $stas = $this->generateImportStats($importJob);
         $this->sendAdminReport($importJob, $stas);
     }
 
     /**
-     * Generate detailed import statistics.
+     *  detailed import statistics.
      */
-    private function generateImportStats(ImportJob $importJob)
+    private function generateImportStats(ImportJob $import_job)
     {
-        // Basic stats
-        $stats = [
-            'import_id' => $importJob->id,
-            'user_id' => $importJob->user_id,
-            'total_records' => $importJob->total_records,
-            'processed_records' => $importJob->processed_records,
-            'failed_records' => $importJob->failed_records,
-            'success_rate' => $importJob->total_records > 0
-                ? round((($importJob->processed_records - $importJob->failed_records) / $importJob->total_records) * 100, 2)
-                : 0,
-            'duration' => $importJob->updated_at->diffInSeconds($importJob->created_at),
-            'records_per_second' => $importJob->updated_at->diffInSeconds($importJob->created_at) > 0
-                ? round($importJob->processed_records / $importJob->updated_at->diffInSeconds($importJob->created_at), 2)
-                : 0,
-            'completed_at' => $importJob->updated_at->toDateTimeString(),
-        ];
-        ImportStatistic::create($stats);
-        return $stats;
+        try {
+            //  duration in seconds
+            $duration = $import_job->updated_at->diffInSeconds($import_job->created_at);
+            //  success rate
+            $success_rate = $import_job->total_records > 0 ? round((($import_job->processed_records - $import_job->failed_records) / $import_job->total_records) * 100, 2) : 0;
+
+            //  records processed per second
+            $records_per_second = $duration > 0 ? round($import_job->processed_records / $duration, 2) : 0;
+
+
+            $import_statistic                        = new ImportStatistic();
+            $import_statistic->import_id             = $import_job->id;
+            $import_statistic->user_id               = $import_job->user_id;
+            $import_statistic->total_records         = $import_job->total_records;
+            $import_statistic->processed_records     = $import_job->processed_records;
+            $import_statistic->failed_records        = $import_job->failed_records;
+            $import_statistic->success_rate          = $success_rate;
+            $import_statistic->duration              = $duration;
+            $import_statistic->records_per_second    = $records_per_second;
+            $import_statistic->completed_at          = $import_job->updated_at->toDateTimeString();
+            $import_statistic->save();
+
+            return $import_statistic;
+        } catch (\Exception $e) {
+            Log::error("Failed to generate import statistics: " . $e->getMessage());
+        }
     }
 
 
-    private function sendAdminReport(ImportJob $importJob, array $stats): void
+
+    private function sendAdminReport(ImportJob $importJob, $stats)
     {
         try {
-            // Only send admin reports for large imports or when there are significant errors
+            //  send admin reports for large imports or when there are significant errors
             if ($importJob->total_records > 1000 || $importJob->failed_records > 10) {
-                Mail::to('shariya@gmail.com')
-                    ->queue(new ImportSummaryReport($importJob, $stats));
+                Mail::to('shariya873@gmail.com')->queue(new ImportSummaryReport($importJob,$stats));
             }
         } catch (\Exception $e) {
             Log::error("Failed to send admin report email: " . $e->getMessage());

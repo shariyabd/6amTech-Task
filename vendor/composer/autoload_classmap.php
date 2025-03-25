@@ -6,10 +6,11 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\GenerateDatabasePerformanceReport' => $baseDir . '/app/Console/Commands/GenerateDatabasePerformanceReport.php',
+    'App\\Enums\\RoleType' => $baseDir . '/app/Enums/RoleType.php',
     'App\\Events\\EmployeeImportCompleted' => $baseDir . '/app/Events/EmployeeImportCompleted.php',
     'App\\Events\\EmployeeImportRequested' => $baseDir . '/app/Events/EmployeeImportRequested.php',
     'App\\Events\\EmployeeSalaryUpdated' => $baseDir . '/app/Events/EmployeeSalaryUpdated.php',
-    'App\\Exports\\EmployeesExport' => $baseDir . '/app/Exports/EmployeesExport.php',
     'App\\Http\\Controllers\\Api\\v1\\Auth\\AuthController' => $baseDir . '/app/Http/Controllers/Api/v1/Auth/AuthController.php',
     'App\\Http\\Controllers\\Api\\v1\\EmployeeController' => $baseDir . '/app/Http/Controllers/Api/v1/EmployeeController.php',
     'App\\Http\\Controllers\\Api\\v1\\OrganizationController' => $baseDir . '/app/Http/Controllers/Api/v1/OrganizationController.php',
@@ -45,6 +46,7 @@ return array(
     'App\\Notifications\\ImportProgress' => $baseDir . '/app/Notifications/ImportProgress.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\TelescopeServiceProvider' => $baseDir . '/app/Providers/TelescopeServiceProvider.php',
+    'App\\Services\\PerformanceMonitor' => $baseDir . '/app/Services/PerformanceMonitor.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Brick\\Math\\BigDecimal' => $vendorDir . '/brick/math/src/BigDecimal.php',
     'Brick\\Math\\BigInteger' => $vendorDir . '/brick/math/src/BigInteger.php',

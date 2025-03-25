@@ -39,7 +39,7 @@ class EmployeeImportController extends BaseController
         event(new EmployeeImportRequested($import_job));
 
         $result = [
-            'progress_url' => url('api/v1/employees/import/status/' . $import_job->id)
+            'progress_url' => route('import.status', $this->importJob->id)
         ];
         return $this->sendResponse($result, 'Your import has been queued and will be processed shortly');
     }

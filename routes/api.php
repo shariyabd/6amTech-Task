@@ -52,9 +52,8 @@ Route::prefix('v1')->group(function () {
             });
 
             // empolyee json import
-            Route::get('/employees/import', [EmployeeImportController::class, 'showImportForm']);
             Route::post('/employees/import', [EmployeeImportController::class, 'processImport']);
-            Route::get('/employees/import/status/{id}', [EmployeeImportController::class, 'showStatus']);
+            Route::get('/employees/import/status/{id}', [EmployeeImportController::class, 'showStatus'])->name('import.status');
         });
 
 

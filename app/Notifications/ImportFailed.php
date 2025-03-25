@@ -21,7 +21,7 @@ class ImportFailed extends Notification
 
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['database'];
     }
 
     public function toMail($notifiable)
@@ -32,16 +32,16 @@ class ImportFailed extends Notification
             ->line("Error: {$this->importJob->error_message}")
             ->line("Total records: {$this->importJob->total_records}")
             ->line("Processed before failure: {$this->importJob->processed_records}")
-            ->action('View Details', url(url('api/v1/employees/import/status/' . $this->importJob->id)));
+            ->action('View Details', route('import.status', $this->importJob->id));
     }
 
     public function toArray($notifiable)
     {
         return [
             'import_job_id' => $this->importJob->id,
-            'status' => 'failed',
-            'message' => 'Employee import failed',
-            'error' => $this->importJob->error_message
+            'status'        => 'failed',
+            'message'       => 'Employee import failed',
+            'error'         => $this->importJob->error_message
         ];
     }
 }

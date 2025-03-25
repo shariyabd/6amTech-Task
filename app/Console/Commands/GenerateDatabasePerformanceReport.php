@@ -2,29 +2,15 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Console\Command\Command;
 
 class GenerateDatabasePerformanceReport extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:generate-database-performance-report';
+   /* protected $signature = 'report:database-performance';
+    protected $description = 'Generate a report on database performance and optimization opportunities';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $this->info('Generating Database Performance Report');
@@ -80,5 +66,5 @@ class GenerateDatabasePerformanceReport extends Command
         $this->info('Report generation complete!');
 
         return Command::SUCCESS;
-    }
+    }*/
 }

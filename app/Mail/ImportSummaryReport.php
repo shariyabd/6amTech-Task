@@ -2,26 +2,27 @@
 
 namespace App\Mail;
 
+use App\Models\ImportJob;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ImportSummaryReport extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $importJob;
+    public $import_job;
     public $stats;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(ImportJob $importJob, array $stats)
+    public function __construct(ImportJob $import_job, array $stats)
     {
-        $this->importJob = $importJob;
+        $this->import_job = $import_job;
         $this->stats = $stats;
     }
 
@@ -31,7 +32,7 @@ class ImportSummaryReport extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Employee Import Summary - Job #{$this->importJob->id}",
+            subject: "Employee Import Summary - Job #{$this->import_job->id}",
         );
     }
 
