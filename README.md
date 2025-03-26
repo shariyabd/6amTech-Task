@@ -1751,10 +1751,22 @@ This documentation outlines the process of generating, importing, and tracking e
 
 - **Notification Endpoints:**
   - **Success Notification:**  
-    `GET http://127.0.0.1:8000/api/v1/employees/import/notification/1`
     
   - **Failure Notification:**  
-    `GET http://127.0.0.1:8000/api/v1/employees/import/notification/1`
+
+---
+
+### Success Email Example
+
+Subject: Employee Import Completed
+
+Your employee data import has been completed.
+Total records: {total_records}
+Successfully processed: {processed_records - failed_records}
+Failed records: {failed_records}
+
+[View Details](http://127.0.0.1:8000/import/status/{import_job_id})
+
 
 - **Description:**  
   Upon completing the import process (or encountering failures), the system notifies the user using the above endpoint.
