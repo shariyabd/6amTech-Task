@@ -109,12 +109,12 @@ QUEUE_CONNECTION=database
 ---
 
 ## Features
-### Role-Based Access Control and Authentication
-### API Management with Sanctum
-### Eloquent Relationships & Data Aggregation
-### Event-Driven Architecture & Background Processing
-### PDF Reporting Package
-### Performance Optimization And Monitoring 
+- Role-Based Access Control and Authentication
+- API Management with Sanctum
+- Eloquent Relationships & Data Aggregation
+- Event-Driven Architecture & Background Processing
+- PDF Reporting Package
+- Performance Optimization And Monitoring 
 
 
 ### API Management with Sanctum
@@ -205,15 +205,12 @@ Database and system optimizations for handling large datasets:
 - **Team:**  
   - **Manager** can view only the team list and a single team.
   
-- *(Additional Manager permissions incomplete in the provided info: "Manager have")*
 
 ### Authentication
 **Base URL:** https://your-domain.com/api/v1/auth
 - **Register:** `POST /register`
 - **Login:** `POST /login`
 - **Logout:** `POST /logout`
-
-Below is an alternative Markdown representation using bullet lists for clarity:
 
 ---
 
@@ -235,7 +232,6 @@ Registers a new user in the system.
 - **name**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The full name of the user.
 
 - **role_id**  
   - **Type:** integer  
@@ -244,13 +240,11 @@ Registers a new user in the system.
 
 - **email**  
   - **Type:** string  
-  - **Required:** Yes  
-  - **Description:** The user's email address.
+  - **Required:** Yes 
 
 - **password**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The password for the user's account.
 
 **Example Request Body:**
 
@@ -297,12 +291,10 @@ POST /api/v1/auth/login
 - **email**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The user's email address.
 
 - **password**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The password for the user's account.
 
 **Description:**  
 Login an existing user and generate an API token.
@@ -338,10 +330,13 @@ Login an existing user and generate an API token.
 ```
 
 ### Me
+
 **Endpoint:**
 ```
 GET /api/v1/auth/me
 ```
+**HTTP Method:**  
+`GET`
 **Description:**  
 Authenticate User Information
 
@@ -368,7 +363,10 @@ Authenticate User Information
 #### Logout
 **Endpoint:**  
 `POST /api/v1/auth/logout`
-
+**HTTP Method:**  
+`POST`
+**Headers:**  
+`Authorization: Bearer {access_token}`
 **Description:**  
 Logout the current user by revoking the current access token.
 
@@ -378,8 +376,9 @@ Logout the current user by revoking the current access token.
 **Response:**
 ```json
 {
-  "data": {},
-  "message": "User logged out successfully."
+    "success": true,
+    "data": [],
+    "message": "User logged out successfully."
 }
 ```
 
@@ -391,6 +390,8 @@ _All endpoints in this section require authentication._
 ```
 GET /api/v1/organizations?per_page=5
 ```
+**HTTP Method:**  
+`GET`
   **Query Parameters:**  
   - `per_page` (optional): Number of organizations per page (default: 10).
 
@@ -464,10 +465,8 @@ GET /api/v1/organizations?per_page=5
 ```
    POST /api/v1/organization
 ```
-
-Below is a Markdown representation of the request body fields based on the provided validation rules:
-
----
+**HTTP Method:**  
+`POST`
 
 ## Request Body Fields
 
@@ -557,9 +556,6 @@ Below is a Markdown representation of the request body fields based on the provi
 }
   ```
 
-Below is the corrected Markdown with proper code block formatting:
-
----
 
 ## Get Organization Details
 
@@ -567,7 +563,8 @@ Below is the corrected Markdown with proper code block formatting:
 ```http
 GET /api/v1/organization/{id}
 ```
-
+**HTTP Method:**  
+`GET`
 **Response:**  
 ```json
 {
@@ -614,6 +611,8 @@ GET /api/v1/organization/{id}
 ```
 PATCH /api/v1/organization/{id}
 ```
+**HTTP Method:**  
+`PATCH`
   **Request Body:**
   ```json
   {
@@ -682,12 +681,37 @@ PATCH /api/v1/organization/{id}
 ```
 DELETE /api/v1/organization/{id}
 ```
+**HTTP Method:**  
+`DELETE`
   **Response:**
   ```json
-  {
-    "data": {},
+{
+    "success": true,
+    "data": {
+        "performance": {
+            "label": "Organization Delete",
+            "execution_time": "7.09ms",
+            "total_queries": 2,
+            "queries": [
+                {
+                    "query": "select * from `organizations` where `organizations`.`id` = ? limit 1",
+                    "bindings": [
+                        "3"
+                    ],
+                    "time": 0.23
+                },
+                {
+                    "query": "delete from `organizations` where `id` = ?",
+                    "bindings": [
+                        3
+                    ],
+                    "time": 5.01
+                }
+            ]
+        }
+    },
     "message": "Organization Deleted Successfully"
-  }
+}
   ```
 
 ### Teams
@@ -697,7 +721,9 @@ _All endpoints in this section require authentication._
   **Endpoint:** 
 ```
 GET /api/v1/teams?per_page=5
-```  
+```
+**HTTP Method:**  
+`GET`
   **Query Parameters:**  
   - `per_page` (optional): Number of teams per page (default: 10).
 
@@ -809,7 +835,8 @@ GET /api/v1/teams?per_page=5
 ```
 POST /api/v1/team
 ```
-
+**HTTP Method:**  
+`POST`
 ### Request Body Fields
 
 - **name**
@@ -878,6 +905,9 @@ POST /api/v1/team
 ```
 GET /api/v1/team/{id}
 ```
+**HTTP Method:**  
+`GET`
+
   **Response:**
   ```json
   {
@@ -926,6 +956,8 @@ GET /api/v1/team/{id}
 ```
 PATCH /api/v1/team/{id}
 ```
+**HTTP Method:**  
+`PATCH`
   **Request Body:**
   ```json
 {
@@ -1022,7 +1054,9 @@ _All endpoints in this section require authentication._
   **Endpoint:** 
 ```
 GET /api/v1/employees
-``` 
+```
+**HTTP Method:**  
+`GET`
   **Query Parameters:**  
   - `per_page` (optional): Number of employees per page (default: 15).  
   - `start_date` (optional): Filter employees by start date.  
@@ -1143,11 +1177,6 @@ GET /api/v1/employees
                     "bindings": [],
                     "time": 1.35
                 },
-                {
-                    "query": "insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)",
-                    "bindings": [
-                        1742970635,
-                        "employees_page_1_per_page_3_filters_de1b6378305762e355588386e8c59e24","O:42:\"Illuminate\\Pagination\\LengthAwarePaginator\":11:{s:8:\"
   ```
 
 - **Create Employee:**  
@@ -1261,7 +1290,10 @@ POST /api/v1/employee`
   **Endpoint:** 
 ```
 GET /api/v1/employee/{id}
-```  
+```
+**HTTP Method:**  
+`GET`
+
   **Response:**
   ```json
   {
@@ -1319,39 +1351,62 @@ GET /api/v1/employee/{id}
                     "bindings": [],
                     "time": 0.64
                 },
-                {
-                    "query": "insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)",
-                    "bindings": [
-                        1742972736,
-                        "employee_10","O:19:\"App\\Models\\Employee\":30:{s:13:\"
   ```
 
 - **Update Employee:**  
   **Endpoint:** 
 ```
 PATCH /api/v1/employee/{id}
-```  
+```
+**HTTP Method:**  
+`PATCH`
   **Request Body:**
   ```json
 {
-    "name" : "Shariya Shuvo Promoted",
-    "email" : "shariya@gmail.com.com",
+{
+    "name": "Charles Harris updated",
+    "email": "charles.harris@example.com",
     "team_id" : "6",
     "organization_id" : "9",
-    "salary" : "45000",
+    "salary" : "40000",
     "start_date" : "23-03-2025"
+}
 }
   ```
   **Response:**
   ```json
-  {
+{
+    "success": true,
     "data": {
-      "id": 1,
-      "name": "Updated Employee Name",
-      "salary": 5500
+        "employee": {
+            "id": 2,
+            "name": "Charles Harris updated",
+            "email": "charles.harris@example.com",
+            "team_id": 6,
+            "organization_id": 9,
+            "salary": 40000,
+            "start_date": "2025-03-23T00:00:00.000000Z",
+            "position": "Software Engineer",
+            "created_at": "2025-03-26T13:11:17.000000Z",
+            "updated_at": "2025-03-26T14:05:04.000000Z"
+        },
+        "performance": {
+            "label": "Employee Update",
+            "execution_time": "0.91ms",
+            "total_queries": 1,
+            "queries": [
+                {
+                    "query": "select * from `employees` where `employees`.`id` = ? limit 1",
+                    "bindings": [
+                        "2"
+                    ],
+                    "time": 0.2
+                }
+            ]
+        }
     },
     "message": "Employee Updated Successfully"
-  }
+}
   ```
 
 - **Delete Employee:**  
@@ -1359,6 +1414,8 @@ PATCH /api/v1/employee/{id}
 ```
 DELETE /api/v1/employee/{id}
 ```
+**HTTP Method:**  
+`DELETE`
   **Response:**
   ```json
 {
@@ -1398,14 +1455,6 @@ DELETE /api/v1/employee/{id}
                     ],
                     "time": 1.07
                 },
-                {
-                    "query": "delete from `cache` where `key` in (?, ?)",
-                    "bindings": [
-                        "employee_cache_keys",
-                        "illuminate:cache:flexible:created:employee_cache_keys"
-                    ],
-                    "time": 0.49
-                }
             ]
         }
     },
@@ -1421,6 +1470,8 @@ _All endpoints in this section require authentication._
 ```
 GET/api/v1/reports/teams/salary
 ```
+**HTTP Method:**  
+`GET`
   **Description:**  
   Calculates the average salary per team and returns a summary with overall averages.
 
@@ -1546,6 +1597,9 @@ GET/api/v1/reports/teams/salary
 ```
 GET /api/v1/reports/organizations/headcount
 ```
+
+**HTTP Method:**  
+`GET`
   **Description:**  
   Returns the count of employees per organization along with a summary of total employees and organizations.
 
@@ -1638,7 +1692,7 @@ This documentation outlines the process of generating, importing, and tracking e
 ## 2. Employee Data Import (Event-Driven)
 
 - **Endpoint:**  
-  `GET http://127.0.0.1:8000/api/v1/employees/import`
+  `POST http://127.0.0.1:8000/api/v1/employees/import`
 
 - **Description:**  
   After generating the JSON file, hit this endpoint to insert the employee data into the system using an event-driven architecture (event, listener, job, queue).
