@@ -539,48 +539,56 @@ Below is a Markdown representation of the request body fields based on the provi
 }
   ```
 
-- **Get Organization Details:**  
-  **Endpoint:** 
-```
+Below is the corrected Markdown with proper code block formatting:
+
+---
+
+## Get Organization Details
+
+**Endpoint:**  
+```http
 GET /api/v1/organization/{id}
 ```
-  **Response:**
-```
+
+**Response:**  
+```json
 {
-    "success": true,
-    "data": {
-        "organization": {
-            "id": 7,
-            "name": "AutoMotiveX",
-            "industry": "Automobile",
-            "location": "Detroit",
-            "phone": "999-000-1111",
-            "email": "support@automotivex.com",
-            "website": "www.automotivex.com",
-            "founded_year": "1995",
-            "created_at": null,
-            "updated_at": null,
-            "teams_count": 2,
-            "employees_count": 0
-        },
-        "performance": {
-            "label": "Organization Show",
-            "execution_time": "7.11ms",
-            "total_queries": 1,
-            "queries": [
-                {
-                    "query": "select `organizations`.*, (select count(*) from `teams` where `organizations`.`id` = `teams`.`organization_id`) as `teams_count`, (select count(*) from `employees` inner join `teams` on `teams`.`id` = `employees`.`team_id` where `organizations`.`id` = `teams`.`organization_id`) as `employees_count` from `organizations` where `organizations`.`id` = ? limit 1",
-                    "bindings": [
-                        "7"
-                    ],
-                    "time": 1.74
-                }
-            ]
-        }
+  "success": true,
+  "data": {
+    "organization": {
+      "id": 7,
+      "name": "AutoMotiveX",
+      "industry": "Automobile",
+      "location": "Detroit",
+      "phone": "999-000-1111",
+      "email": "support@automotivex.com",
+      "website": "www.automotivex.com",
+      "founded_year": "1995",
+      "created_at": null,
+      "updated_at": null,
+      "teams_count": 2,
+      "employees_count": 0
     },
-    "message": "Single Organization Data"
+    "performance": {
+      "label": "Organization Show",
+      "execution_time": "7.11ms",
+      "total_queries": 1,
+      "queries": [
+        {
+          "query": "select `organizations`.*, (select count(*) from `teams` where `organizations`.`id` = `teams`.`organization_id`) as `teams_count`, (select count(*) from `employees` inner join `teams` on `teams`.`id` = `employees`.`team_id` where `organizations`.`id` = `teams`.`organization_id`) as `employees_count` from `organizations` where `organizations`.`id` = ? limit 1",
+          "bindings": [
+            "7"
+          ],
+          "time": 1.74
+        }
+      ]
+    }
+  },
+  "message": "Single Organization Data"
 }
-  ```
+```
+
+---
 
 - **Update Organization:**  
   **Endpoint:** 
@@ -775,8 +783,6 @@ GET /api/v1/teams?per_page=5
 }
   ```
 
-Below is the corrected Markdown with proper code block formatting:
-
 ---
 
 ## Create Team
@@ -962,10 +968,33 @@ DELETE /api/v1/team/{id}
 ```
   **Response:**
   ```json
-  {
-    "data": {},
-    "message": "Team deleted successfully"
-  }
+{
+    "success": true,
+    "data": {
+        "performance": {
+            "label": "Team Delete",
+            "execution_time": "6.37ms",
+            "total_queries": 2,
+            "queries": [
+                {
+                    "query": "select * from `teams` where `teams`.`id` = ? limit 1",
+                    "bindings": [
+                        "2"
+                    ],
+                    "time": 0.32
+                },
+                {
+                    "query": "delete from `teams` where `id` = ?",
+                    "bindings": [
+                        2
+                    ],
+                    "time": 4.63
+                }
+            ]
+        }
+    },
+    "message": "Team Deleted Successfully"
+}
   ```
 
 ### Employees
