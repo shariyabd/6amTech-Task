@@ -22,6 +22,7 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
   - [Teams](#teams)
   - [Employees](#employees)
   - [Reports](#reports)
+    - [Employees Organization Report Download As PDF](#employees-organization-report-download-as-pdf)
   - [Employee Data Import & Salary Update Logs](#employee-data-import--salary-update-logs)
 - [Testing](#testing)
 - [Performance Monitoring](#performance-monitoring)
@@ -1668,7 +1669,28 @@ GET /api/v1/reports/organizations/headcount
     "message": "Organization Wise Employess"
 }
   ```
+## Employees Organization Report Download As PDF:
+  **Endpoint:** 
 
+```
+GET /api/v1/reports/employee
+```
+
+**HTTP Method:**  
+`GET`
+  **Description:**  
+  Create a  pdf file of Complete Employee Organization Report
+  
+  **Usage**
+```
+use Shariya\PdfGenerator\Facades\PdfGenerator;
+
+return PdfGenerator::generateFromView(
+    'reports.employee-report',
+    ['result' => $result],
+    'employee_report_' . now()->format('Y-m-d') . '.pdf'
+);
+```
 
 # Employee Data Import & Salary Update Logs
 
@@ -1682,7 +1704,7 @@ This documentation outlines the process of generating, importing, and tracking e
   `GET http://127.0.0.1:8000/api/v1/import`
 
 - **Description:**  
-  This endpoint generates 50,000 employee records under various teams and exports the data to a JSON file.
+  This endpoint generates 300 employee records under various teams and exports the data to a JSON file.
 
 - **Output File Location:**  
   `public\exports\employee_data.json`
@@ -1767,9 +1789,6 @@ Failed records: {failed_records}
 
 [View Details](http://127.0.0.1:8000/import/status/{import_job_id})
 
-
-- **Description:**  
-  Upon completing the import process (or encountering failures), the system notifies the user using the above endpoint.
 
 ---
 
@@ -2096,6 +2115,14 @@ Run the complete test suite to ensure everything is working correctly:
 php artisan test
 ```
 
+> **Note:** In the `ReportTest` class, I have written only two unit tests for report functionality:
+> - **Team Report Tests:**
+>   - `it_can_get_average_salary_per_team`
+>   - `it_handles_team_with_no_employees`
+> - **Organization Report Tests:**
+>   - `it_can_get_employees_per_organization`
+>   - `it_handles_organization_with_no_employees`
+
 ---
 
 ## Performance Monitoring
@@ -2109,21 +2136,6 @@ Laravel Telescope is integrated for performance monitoring.
 
 ---
 
-## Contributing
-- Fork the repository.
-- Create your feature branch:  
-  ```bash
-  git checkout -b feature/your-feature-name
-  ```
-- Commit your changes:  
-  ```bash
-  git commit -m 'Add some amazing feature'
-  ```
-- Push to the branch:  
-  ```bash
-  git push origin feature/your-feature-name
-  ```
-- Open a Pull Request.
-```
+## Developer Note
 
-This complete markdown document contains all sections linked appropriately via the Table of Contents. When viewed on platforms like GitHub, clicking any item in the Table of Contents will navigate to the corresponding section in the document.
+
