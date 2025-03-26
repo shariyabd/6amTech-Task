@@ -1766,23 +1766,142 @@ This documentation outlines the process of generating, importing, and tracking e
 - **Trigger Condition:**  
   If the import job completes with more than 1000 total records **or** if there are 10 or more failed records, the admin receives an import statistics summary email.
 
+
+
+## Employee Import Summary Mail Format 
+
+**Import Job #12345** has been completed.  
+
+## Import Statistics:  
+
+| Metric                 | Value              |
+|------------------------|--------------------|
+| **Total Records**      | 10,000             |
+| **Successfully Processed** | 9,800         |
+| **Failed Records**     | 200                |
+| **Success Rate**       | 98%                |
+| **Processing Duration** | 00:02:30         |
+| **Performance**        | 66 records/second  |
+| **Completed At**       | 2025-03-26 14:30:00 |
+
+---
+
+## ⚠️ Warning  
+This import had **200 failed records**. You may want to review the logs for details.  
+
+[**View Import Details**](#) *(A button linking to the import details page)*  
+
+Thanks,  
+**OrganizationManagement**
+
+
 - **Admin Email:**  
   `shariya873@gmail.com`
 
 - **Statistics Endpoint:**  
-  `GET http://127.0.0.1:8000/api/v1/employees/import/stattiscits/1`
+  `GET http://127.0.0.1:8000/api/v1/employees/import-statistics`
 
-- **Response Object Keys:**
-  - `user_name`
-  - `import_status`
-  - `total_records`
-  - `processed_records`
-  - `failed_records`
-  - `success_rate`
-  - `duration`
-  - `records_per_second`
 
----
+- **Response:**
+```
+{
+    "success": true,
+    "data": {
+        "total_statistics": 8,
+        "statistics": [
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            }
+        ]
+    },
+    "message": "Employee Import Statistics"
+}
+```
 
 ## 6. Salary Update Logs
 
@@ -1790,10 +1909,169 @@ This documentation outlines the process of generating, importing, and tracking e
   During the import process, if there is an update to an employee's salary, the system tracks both the old and new salary values.
 
 - **Salary Logs Endpoint (List View):**  
-  `GET http://127.0.0.1:8000/api/v1/employees/salery-logs`
+  `GET http://127.0.0.1:8000/api/v1/salery-log`
 
 This endpoint provides a list view of the salary update logs.
-
+- **Response:**
+```{
+    "success": true,
+    "data": {
+        "data": [
+            {
+                "id": 1,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 2,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 3,
+                "employee_id": 50,
+                "old_salary": "94928.00",
+                "new_salary": "216635.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 4,
+                "employee_id": 50,
+                "old_salary": "94928.00",
+                "new_salary": "216635.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 5,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 6,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            }
+        ],
+        "meta": {
+            "current_page": 1,
+            "last_page": 1,
+            "total": 6,
+            "per_page": 15
+        }
+    },
+    "message": " Salery Log List"
+}
+```
 ---
 ```
 
