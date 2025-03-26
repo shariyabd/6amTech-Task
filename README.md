@@ -2104,7 +2104,6 @@ This endpoint provides a list view of the salary update logs.
 }
 ```
 ---
-```
 
 ## Testing
 
