@@ -1770,7 +1770,7 @@ This documentation outlines the process of generating, importing, and tracking e
   `shariya873@gmail.com`
 
 - **Statistics Endpoint:**  
-  `GET http://127.0.0.1:8000/api/v1/employees/import/stattiscits/1`
+  `GET http://127.0.0.1:8000/api/v1/employees/import-statistics`
 
 - **Response:**
 ```
