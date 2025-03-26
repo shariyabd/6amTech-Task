@@ -1766,11 +1766,41 @@ This documentation outlines the process of generating, importing, and tracking e
 - **Trigger Condition:**  
   If the import job completes with more than 1000 total records **or** if there are 10 or more failed records, the admin receives an import statistics summary email.
 
+
+
+# Employee Import Summary Mail To Admin 
+
+**Import Job #12345** has been completed.  
+
+## Import Statistics:  
+
+| Metric                 | Value              |
+|------------------------|--------------------|
+| **Total Records**      | 10,000             |
+| **Successfully Processed** | 9,800         |
+| **Failed Records**     | 200                |
+| **Success Rate**       | 98%                |
+| **Processing Duration** | 00:02:30         |
+| **Performance**        | 66 records/second  |
+| **Completed At**       | 2025-03-26 14:30:00 |
+
+---
+
+## ⚠️ Warning  
+This import had **200 failed records**. You may want to review the logs for details.  
+
+[**View Import Details**](#) *(A button linking to the import details page)*  
+
+Thanks,  
+**OrganizationManagement**
+
+
 - **Admin Email:**  
   `shariya873@gmail.com`
 
 - **Statistics Endpoint:**  
   `GET http://127.0.0.1:8000/api/v1/employees/import-statistics`
+
 
 - **Response:**
 ```
