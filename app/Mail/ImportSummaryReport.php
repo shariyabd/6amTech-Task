@@ -20,7 +20,7 @@ class ImportSummaryReport extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(ImportJob $import_job, array $stats)
+    public function __construct(ImportJob $import_job, $stats)
     {
         $this->import_job = $import_job;
         $this->stats = $stats;

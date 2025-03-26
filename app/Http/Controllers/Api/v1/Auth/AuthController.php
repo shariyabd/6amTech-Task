@@ -113,20 +113,5 @@ class AuthController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function refresh(Request $request): JsonResponse
-    {
-        $user = $request->user();
-        // Revoke current token
-        $request->user()->currentAccessToken()->delete();
-
-        // Token generation
-        $token = $user->createToken('KTrihM/Rxkek5u2ev7e7kBeOXyeIYQSSSGo+IVzJFlY=')->plainTextToken;
-
-        $result = [
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'user'         => $user,
-        ];
-        return $this->sendResponse($result, 'Token refreshed successfully');
-    }
+  
 }

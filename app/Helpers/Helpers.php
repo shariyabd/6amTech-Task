@@ -127,7 +127,7 @@ function generateSampleEmployeeData($count = 1000, $outputFile = 'sample_employe
         [180000, 250000]
     ];
 
-    //  employees array
+
     $employees = [];
     $domains = ['example.com', 'company.org', 'enterprise.co', 'corp.net', 'business.io'];
 

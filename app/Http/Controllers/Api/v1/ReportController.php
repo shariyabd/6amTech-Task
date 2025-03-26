@@ -6,9 +6,10 @@ use Exception;
 use App\Models\Team;
 use App\Models\Organization;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
-
+use Shariya\PdfGenerator\Facades\PdfGenerator;
 
 class ReportController extends BaseController
 {
@@ -120,7 +121,12 @@ class ReportController extends BaseController
                 'report'              => $report,
             ];
 
-            return $this->sendResponse($result, 'Employee Report');
+
+            return PdfGenerator::generateFromView(
+                'reports.employee-report',
+                ['result' => $result],
+                'employee_report_' . now()->format('Y-m-d') . '.pdf'
+            );
         } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }

@@ -38,12 +38,6 @@ class HandleImportCompletionListener implements ShouldQueue
     {
         $import_job = $event->import_job;
 
-        Log::info("Import completed successfully", [
-            'import_job_id' => $import_job->id,
-            'processed'     => $import_job->processed_records,
-            'failed'        => $import_job->failed_records
-        ]);
-
         //Generate import summary statistics
         $stas = $this->generateImportStats($import_job);
         $this->sendAdminReport($import_job, $stas);
@@ -86,10 +80,12 @@ class HandleImportCompletionListener implements ShouldQueue
 
     private function sendAdminReport(ImportJob $importJob, $stats)
     {
+
         try {
             //  send admin reports for large imports or when there are significant errors
-            if ($importJob->total_records > 1000 || $importJob->failed_records > 10) {
-                Mail::to(Auth::user()->email)->queue(new ImportSummaryReport($importJob, $stats));
+            if ($importJob->total_records > 100 || $importJob->failed_records > 10) {
+                $adminEmail = $importJob->user->email ?? 'shariya873@gmail.com';
+                Mail::to($adminEmail)->queue(new ImportSummaryReport($importJob, $stats));
             }
         } catch (\Exception $e) {
             Log::error("Failed to send admin report email: " . $e->getMessage());

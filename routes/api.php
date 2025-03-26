@@ -43,12 +43,9 @@ Route::prefix('v1')->group(function () {
 
             // Reports
             Route::prefix('reports')->group(function () {
-                Route::get('teams/salary', [ReportController::class, 'avg_salery_per_team'])
-                    ->name('teams.salary');
-                Route::get('organizations/headcount', [ReportController::class, 'employess_per_organization'])
-                    ->name('organizations.headcount');
-                Route::get('employee', [ReportController::class, 'employee_report'])
-                    ->name('employee.report');
+                Route::get('teams/salary', [ReportController::class, 'avg_salery_per_team'])->name('teams.salary');
+                Route::get('organizations/headcount', [ReportController::class, 'employess_per_organization'])->name('organizations.headcount');
+                Route::get('employee', [ReportController::class, 'employee_report'])->name('employee.report');
             });
             //import data statistics
             Route::get('import-statistics', [ImportStatisticController::class, 'index']);
@@ -67,7 +64,7 @@ Route::prefix('v1')->group(function () {
 
             // this route will generete json employess data
             Route::get('/import', function () {
-                return  generateSampleEmployeeData(1000, 'exports/employee_data.json');
+                return  generateSampleEmployeeData(10, 'exports/employee_data.json');
             });
 
             // Team view (both admin and manager can view)
