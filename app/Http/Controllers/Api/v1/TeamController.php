@@ -124,7 +124,7 @@ class TeamController extends BaseController
             $performanceData = $this->performance_monitor->end_monitoring('Team Show');
 
             return $this->sendResponse([
-                'organization' => $team->toArray(),
+                'team' => $team->toArray(),
                 'performance' => $performanceData
             ], "Single Team Data");
         } catch (Exception $e) {
