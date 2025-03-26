@@ -2,24 +2,20 @@
 
 use App\Enums\RoleType;
 use Illuminate\Http\Request;
+use App\Models\ImportStatistic;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\TeamController;
 use App\Http\Controllers\Api\v1\ReportController;
-use App\Http\Controllers\EmployeeImportController;
 use App\Http\Controllers\Api\v1\EmployeeController;
 use App\Http\Controllers\Api\v1\Auth\AuthController;
 use App\Http\Controllers\Api\v1\OrganizationController;
-
-
-
+use App\Http\Controllers\Api\v1\EmployeeImportController;
+use App\Http\Controllers\Api\v1\ImportStatisticController;
+use App\Http\Controllers\SaleryUpdateLogController;
 
 Route::prefix('v1')->group(function () {
 
-    // this route will genere json employess data
-    Route::get('/import', function () {
-        generateSampleEmployeeData(100, 'exports/employee_data.json');
-    });
-
+    //auth routes
     Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
         Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
@@ -32,6 +28,8 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         Route::middleware('role:' . RoleType::ADMIN->value)->group(function () {
+
+            //Organizations
             Route::get('organizations', [OrganizationController::class, 'index']);
             Route::post('organization', [OrganizationController::class, 'store']);
             Route::patch('organization/{id}', [OrganizationController::class, 'update']);
@@ -49,7 +47,14 @@ Route::prefix('v1')->group(function () {
                     ->name('teams.salary');
                 Route::get('organizations/headcount', [ReportController::class, 'employess_per_organization'])
                     ->name('organizations.headcount');
+                Route::get('employee', [ReportController::class, 'employee_report'])
+                    ->name('employee.report');
             });
+            //import data statistics
+            Route::get('import-statistics', [ImportStatisticController::class, 'index']);
+            //salery log report
+            Route::get('salery-log', [SaleryUpdateLogController::class, 'index']);
+
 
             // empolyee json import
             Route::post('/employees/import', [EmployeeImportController::class, 'processImport']);
@@ -59,6 +64,12 @@ Route::prefix('v1')->group(function () {
 
         // Routes accessible by both Admin and Manager
         Route::middleware('role:' . RoleType::ADMIN->value . ',' . RoleType::MANAGER->value)->group(function () {
+
+            // this route will generete json employess data
+            Route::get('/import', function () {
+                return  generateSampleEmployeeData(1000, 'exports/employee_data.json');
+            });
+
             // Team view (both admin and manager can view)
             Route::get('teams', [TeamController::class, 'index']);
             Route::get('team/{id}', [TeamController::class, 'show']);

@@ -18,4 +18,13 @@ class ImportStatistic extends Model
         'records_per_second',
         'completed_at',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function import_job()
+    {
+        return $this->belongsTo(ImportJob::class, 'import_id', 'id');
+    }
 }

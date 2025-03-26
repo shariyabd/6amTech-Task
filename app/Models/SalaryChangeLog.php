@@ -21,6 +21,6 @@ class SalaryChangeLog extends Model
 
     public function employee()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class)->selectRaw('id, name, salary, team_id,organization_id');
     }
 }

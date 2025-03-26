@@ -6,10 +6,11 @@ use App\Models\ImportJob;
 use App\Models\ImportStatistic;
 use App\Mail\ImportSummaryReport;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Events\EmployeeImportCompletedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\EmployeeImportCompletedEvent;
 
 class HandleImportCompletionListener implements ShouldQueue
 {
@@ -35,17 +36,17 @@ class HandleImportCompletionListener implements ShouldQueue
      */
     public function handle(EmployeeImportCompletedEvent $event): void
     {
-        $importJob = $event->import_job;
+        $import_job = $event->import_job;
 
         Log::info("Import completed successfully", [
-            'import_job_id' => $importJob->id,
-            'processed'     => $importJob->processed_records,
-            'failed'        => $importJob->failed_records
+            'import_job_id' => $import_job->id,
+            'processed'     => $import_job->processed_records,
+            'failed'        => $import_job->failed_records
         ]);
 
         //Generate import summary statistics
-        $stas = $this->generateImportStats($importJob);
-        $this->sendAdminReport($importJob, $stas);
+        $stas = $this->generateImportStats($import_job);
+        $this->sendAdminReport($import_job, $stas);
     }
 
     /**
@@ -88,7 +89,7 @@ class HandleImportCompletionListener implements ShouldQueue
         try {
             //  send admin reports for large imports or when there are significant errors
             if ($importJob->total_records > 1000 || $importJob->failed_records > 10) {
-                Mail::to('shariya873@gmail.com')->queue(new ImportSummaryReport($importJob,$stats));
+                Mail::to(Auth::user()->email)->queue(new ImportSummaryReport($importJob, $stats));
             }
         } catch (\Exception $e) {
             Log::error("Failed to send admin report email: " . $e->getMessage());

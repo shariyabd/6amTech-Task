@@ -62,4 +62,67 @@ class ReportController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+    public function employee_report()
+    {
+        try {
+
+            $organizations = Organization::with(['teams.employees'])->get();
+
+            $report = $organizations->map(function ($org) {
+                //  organization-level aggregates
+                $org_employees       = $org->employees;
+                $total_org_employees = $org_employees->count();
+                $average_org_salary  = $org_employees->avg('salary');
+
+                //  teams data
+                $teams_data = $org->teams->map(function ($team) {
+                    // Get employees
+                    $employees              = $team->employees;
+                    $total_team_employees   = $employees->count();
+                    $average_team_salary    = $employees->avg('salary');
+
+                    //  employee tenure
+                    $employees_data     = $employees->map(function ($employee) {
+                        $tenure_years   = $employee->start_date ? $employee->start_date->diffInYears(now()) : null;
+                        return [
+                            'name'             => $employee->name,
+                            'email'            => $employee->email,
+                            'position'         => $employee->position,
+                            'salary'           => $employee->salary,
+                            'start_date'       => $employee->start_date ? $employee->start_date->format('Y-m-d') : null,
+                            'tenure_years'     => $tenure_years,
+                        ];
+                    });
+
+                    return [
+                        'team_id'           => $team->id,
+                        'team_name'         => $team->name,
+                        'department'        => $team->department,
+                        'total_employees'   => $total_team_employees,
+                        'average_salary'    => $average_team_salary,
+                        'employees'         => $employees_data,
+                    ];
+                });
+
+                return [
+                    'organization_id'     => $org->id,
+                    'organization_name'   => $org->name,
+                    'industry'            => $org->industry,
+                    'location'            => $org->location,
+                    'total_employees'     => $total_org_employees,
+                    'average_salary'      => $average_org_salary,
+                    'teams'               => $teams_data,
+                ];
+            });
+
+            $result = [
+                'total_organizations' => $organizations->count(),
+                'report'              => $report,
+            ];
+
+            return $this->sendResponse($result, 'Employee Report');
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
+    }
 }

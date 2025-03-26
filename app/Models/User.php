@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\ImportJob;
+use App\Models\ImportStatistic;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,5 +56,21 @@ class User extends Authenticatable
     public function hasRole(string $roleSlug): bool
     {
         return $this->role->slug === $roleSlug;
+    }
+
+    public function import_job()
+    {
+        return $this->hasMany(ImportJob::class);
+    }
+    public function import_statistics()
+    {
+        return $this->hasManyThrough(
+            ImportStatistic::class,
+            ImportJob::class,
+            'user_id',
+            'import_id',
+            'id',
+            'id'
+        );
     }
 }

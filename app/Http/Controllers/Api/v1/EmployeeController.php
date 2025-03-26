@@ -4,18 +4,9 @@ namespace App\Http\Controllers\Api\v1;
 
 use Exception;
 use App\Models\Employee;
-use Faker\Factory as Faker;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Reader;
-use Maatwebsite\Excel\Writer;
-use App\Exports\EmployeesExport;
-use App\Imports\EmployeesImport;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Services\PerformanceMonitor;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Requests\EmployeeRequest;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
@@ -49,19 +40,7 @@ class EmployeeController extends BaseController
                 $query->where('organization_id', $request->organization_id);
             }
 
-            //  unique cache key
-            $filters = [
-                'start_date' => $request->start_date,
-                'team_id' => $request->team_id,
-                'organization_id' => $request->organization_id
-            ];
-            $filterKey = md5(json_encode($filters));
-
-            $cacheKey = "employees_page_{$page}_per_page_{$per_page}_filters_{$filterKey}";
-
-            $employees = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($query, $per_page) {
-                return $query->paginate($per_page);
-            });
+            $employees = $query->paginate($per_page);
 
             $performanceData = $this->performance_monitor->end_monitoring('Employee Index');
 
@@ -184,14 +163,7 @@ class EmployeeController extends BaseController
      */
     protected function clearEmployeeCaches($id = null)
     {
-        if ($id) {
-            Cache::forget("employee_{$id}");
-        }
-        $cacheKeys = Cache::get('employee_cache_keys', []);
-        foreach ($cacheKeys as $key) {
-            Cache::forget($key);
-        }
 
-        Cache::forget('employee_cache_keys');
+       
     }
 }

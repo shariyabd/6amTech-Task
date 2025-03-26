@@ -68,15 +68,16 @@ class TeamController extends BaseController
     {
         $this->performance_monitor->start_monitoring();
         try {
-            $validated = $request->validated();
-            $team = Team::create($validated);
-            $this->clearOrganizationCaches();
-            $performanceData = $this->performance_monitor->end_monitoring('Organization Store');
+            $validated  = $request->validated();
+            $team       = Team::create($validated);
+            $this->clearTeamCaches();
+            $performanceData = $this->performance_monitor->end_monitoring('Team Store');
 
             return $this->sendResponse([
                 'team' => $team->toArray(),
                 'performance' => $performanceData
             ], "Team Created Successfully");
+
         } catch (Exception $e) {
             $this->performance_monitor->end_monitoring('Team Store Error');
             return $this->sendError($e->getMessage());
@@ -94,9 +95,9 @@ class TeamController extends BaseController
             }
             $validated = $request->validated();
             $team->update($validated);
-            $this->clearOrganizationCaches($id);
+            $this->clearTeamCaches($id);
 
-            $performanceData = $this->performance_monitor->end_monitoring('Organization Update');
+            $performanceData = $this->performance_monitor->end_monitoring('Team Update');
 
             return $this->sendResponse([
                 'organization' => $team->fresh()->toArray(),
@@ -145,7 +146,7 @@ class TeamController extends BaseController
                 return $this->sendResponse([], 'Team not found');
             }
             $team->delete();
-            $this->clearOrganizationCaches($id);
+            $this->clearTeamCaches($id);
             $performanceData = $this->performance_monitor->end_monitoring('Team Delete');
 
             return $this->sendResponse([
@@ -157,7 +158,7 @@ class TeamController extends BaseController
         }
     }
 
-    protected function clearOrganizationCaches($id = null)
+    protected function clearTeamCaches($id = null)
     {
         if ($id) {
             Cache::forget("oteam_{$id}");

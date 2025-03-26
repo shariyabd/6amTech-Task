@@ -38,10 +38,11 @@ class Employee extends Model
     {
         return $this->belongsTo(Organization::class)->selectRaw('id, name, industry,location');
     }
-    // public function organization()
-    // {
-    //     return $this->team->organization();
-    // }
+
+    public function salery_log()
+    {
+        return $this->hasMany(SalaryChangeLog::class)->selectRaw('id,employee_id,old_selary, new_selary');
+    }
 
 
     public function scopeStartDate($query, $start_date)

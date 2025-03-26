@@ -27,6 +27,6 @@ class Organization extends Model
 
     public function employees()
     {
-        return $this->hasManyThrough(Employee::class, Team::class)->select(['employees.id', 'employees.team_id', 'employees.first_name', 'employees.last_name', 'employees.email']);
+        return $this->hasManyThrough(Employee::class, Team::class)->select(['employees.id', 'employees.team_id', 'employees.name', 'employees.email']);
     }
 }

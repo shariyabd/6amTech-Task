@@ -1,16 +1,13 @@
 <?php
-function generateSampleEmployeeData($count = 10, $outputFile = 'sample_employee_data.json')
+function generateSampleEmployeeData($count = 1000, $outputFile = 'sample_employee_data.json')
 {
     $teamIds = \App\Models\Team::pluck('id')->toArray();
     $organizationIds = \App\Models\Organization::pluck('id')->toArray();
 
-    //  if  have teams and organizations
     if (empty($teamIds) || empty($organizationIds)) {
-        echo "Error: No teams or organizations found in the database. Please create some first." . PHP_EOL;
-        return false;
+        return ['status' => false, "message" => " No teams or organizations found in the database. Please create some first"];
     }
 
-    //  first and last names for variety
     $firstNames = [
         'James',
         'John',
@@ -97,7 +94,7 @@ function generateSampleEmployeeData($count = 10, $outputFile = 'sample_employee_
         'Carter'
     ];
 
-    // Job positions
+
     $positions = [
         'Software Engineer',
         'Senior Software Engineer',
@@ -138,25 +135,14 @@ function generateSampleEmployeeData($count = 10, $outputFile = 'sample_employee_
     $batchSize = 50; // Process in batches to avoid memory issues
 
     for ($i = 0; $i < $count; $i++) {
-        // Progress report for larger datasets
-        if ($i > 0 && $i % $batchSize === 0) {
-            $percentage = round(($i / $count) * 100);
-            $elapsedTime = time() - $startTime;
-            $estimatedTotal = ($elapsedTime / $i) * $count;
-            $remainingTime = $estimatedTotal - $elapsedTime;
+        $firstName  = $firstNames[array_rand($firstNames)];
+        $lastName   = $lastNames[array_rand($lastNames)];
+        $name       = $firstName . ' ' . $lastName;
 
-            echo "Generated $i of $count records ($percentage%). ";
-            echo "Elapsed: " . formatTime($elapsedTime) . ", ";
-            echo "Remaining: " . formatTime($remainingTime) . PHP_EOL;
-        }
-
-        $firstName = $firstNames[array_rand($firstNames)];
-        $lastName = $lastNames[array_rand($lastNames)];
-        $name = $firstName . ' ' . $lastName;
-
-        // Create email (with some randomization to avoid duplicates)
+        //  email (with some randomization to avoid duplicates)
         $emailPrefix = strtolower($firstName . '.' . $lastName);
         $emailPrefix = preg_replace('/[^a-z.]/', '', $emailPrefix);
+
         if ($i > count($firstNames) * count($lastNames)) {
             $emailPrefix .= rand(1, 999);
         }
@@ -166,7 +152,7 @@ function generateSampleEmployeeData($count = 10, $outputFile = 'sample_employee_
         // Random start date between 5 years ago and today
         $startDate = date('Y-m-d', strtotime('-' . rand(0, 1825) . ' days'));
 
-        // Choose appropriate salary range based on position index
+        //  appropriate salary range based on position index
         $positionIndex = array_rand($positions);
         $salaryRange = $salarySets[min(4, intdiv($positionIndex, 4))];
         $salary = rand($salaryRange[0], $salaryRange[1]);
@@ -194,25 +180,6 @@ function generateSampleEmployeeData($count = 10, $outputFile = 'sample_employee_
 
     $fileSize = filesize($outputFile) / (1024 * 1024); // in MB
 
-    echo PHP_EOL . "✅ Successfully generated $count employee records!" . PHP_EOL;
-    echo "📁 Output file: $outputFile (Size: " . number_format($fileSize, 2) . " MB)" . PHP_EOL;
-    echo "👤 Sample record:" . PHP_EOL;
-    echo json_encode($employees[0], JSON_PRETTY_PRINT) . PHP_EOL;
 
-    return $outputFile;
-}
-
-// Helper function to format seconds into readable time
-function formatTime($seconds)
-{
-    $minutes = floor($seconds / 60);
-    $seconds = $seconds % 60;
-
-    if ($minutes > 60) {
-        $hours = floor($minutes / 60);
-        $minutes = $minutes % 60;
-        return "{$hours}h {$minutes}m {$seconds}s";
-    }
-
-    return "{$minutes}m {$seconds}s";
+    return ['status' => true, 'message' => "Successfully generated $count employee records"];
 }

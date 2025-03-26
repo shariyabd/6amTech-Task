@@ -23,4 +23,9 @@ class ImportJob extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function import_statistics()
+    {
+        return $this->hasMany(ImportStatistic::class, 'import_id', 'id');
+    }
 }

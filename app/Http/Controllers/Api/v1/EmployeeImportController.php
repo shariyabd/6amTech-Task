@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Models\ImportJob;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
 use App\Events\EmployeeImportRequestedEvent;
 
@@ -27,13 +28,13 @@ class EmployeeImportController extends BaseController
 
         // import job record to track progress
         $import_job = ImportJob::create([
-            'user_id' => Auth::id(),
-            'file_path' => $path,
-            'status' => 'pending',
-            'job_id' => Str::uuid(),
-            'total_records' => 0,
+            'user_id'           => Auth::id(),
+            'file_path'         => $path,
+            'status'            => 'pending',
+            'job_id'            => Str::uuid(),
+            'total_records'     => 0,
             'processed_records' => 0,
-            'failed_records' => 0,
+            'failed_records'    => 0,
         ]);
 
         event(new EmployeeImportRequestedEvent($import_job));
