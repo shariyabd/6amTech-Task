@@ -205,15 +205,12 @@ Database and system optimizations for handling large datasets:
 - **Team:**  
   - **Manager** can view only the team list and a single team.
   
-- *(Additional Manager permissions incomplete in the provided info: "Manager have")*
 
 ### Authentication
 **Base URL:** https://your-domain.com/api/v1/auth
 - **Register:** `POST /register`
 - **Login:** `POST /login`
 - **Logout:** `POST /logout`
-
-Below is an alternative Markdown representation using bullet lists for clarity:
 
 ---
 
@@ -235,7 +232,6 @@ Registers a new user in the system.
 - **name**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The full name of the user.
 
 - **role_id**  
   - **Type:** integer  
@@ -244,13 +240,11 @@ Registers a new user in the system.
 
 - **email**  
   - **Type:** string  
-  - **Required:** Yes  
-  - **Description:** The user's email address.
+  - **Required:** Yes 
 
 - **password**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The password for the user's account.
 
 **Example Request Body:**
 
@@ -297,12 +291,10 @@ POST /api/v1/auth/login
 - **email**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The user's email address.
 
 - **password**  
   - **Type:** string  
   - **Required:** Yes  
-  - **Description:** The password for the user's account.
 
 **Description:**  
 Login an existing user and generate an API token.
@@ -338,10 +330,13 @@ Login an existing user and generate an API token.
 ```
 
 ### Me
+
 **Endpoint:**
 ```
 GET /api/v1/auth/me
 ```
+**HTTP Method:**  
+`GET`
 **Description:**  
 Authenticate User Information
 
@@ -368,7 +363,10 @@ Authenticate User Information
 #### Logout
 **Endpoint:**  
 `POST /api/v1/auth/logout`
-
+**HTTP Method:**  
+`POST`
+**Headers:**  
+`Authorization: Bearer {access_token}`
 **Description:**  
 Logout the current user by revoking the current access token.
 
@@ -378,8 +376,9 @@ Logout the current user by revoking the current access token.
 **Response:**
 ```json
 {
-  "data": {},
-  "message": "User logged out successfully."
+    "success": true,
+    "data": [],
+    "message": "User logged out successfully."
 }
 ```
 
@@ -391,6 +390,8 @@ _All endpoints in this section require authentication._
 ```
 GET /api/v1/organizations?per_page=5
 ```
+**HTTP Method:**  
+`GET`
   **Query Parameters:**  
   - `per_page` (optional): Number of organizations per page (default: 10).
 
@@ -464,10 +465,8 @@ GET /api/v1/organizations?per_page=5
 ```
    POST /api/v1/organization
 ```
-
-Below is a Markdown representation of the request body fields based on the provided validation rules:
-
----
+**HTTP Method:**  
+`POST`
 
 ## Request Body Fields
 
@@ -557,9 +556,6 @@ Below is a Markdown representation of the request body fields based on the provi
 }
   ```
 
-Below is the corrected Markdown with proper code block formatting:
-
----
 
 ## Get Organization Details
 
@@ -567,7 +563,8 @@ Below is the corrected Markdown with proper code block formatting:
 ```http
 GET /api/v1/organization/{id}
 ```
-
+**HTTP Method:**  
+`GET`
 **Response:**  
 ```json
 {
@@ -614,6 +611,8 @@ GET /api/v1/organization/{id}
 ```
 PATCH /api/v1/organization/{id}
 ```
+**HTTP Method:**  
+`PATCH`
   **Request Body:**
   ```json
   {
