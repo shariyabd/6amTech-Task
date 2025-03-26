@@ -1772,17 +1772,106 @@ This documentation outlines the process of generating, importing, and tracking e
 - **Statistics Endpoint:**  
   `GET http://127.0.0.1:8000/api/v1/employees/import/stattiscits/1`
 
-- **Response Object Keys:**
-  - `user_name`
-  - `import_status`
-  - `total_records`
-  - `processed_records`
-  - `failed_records`
-  - `success_rate`
-  - `duration`
-  - `records_per_second`
-
----
+- **Response:**
+```
+{
+    "success": true,
+    "data": {
+        "total_statistics": 8,
+        "statistics": [
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -32,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:37:15"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            },
+            {
+                "import_job_id": null,
+                "user_id": 1,
+                "total_records": 1000,
+                "processed_records": 2000,
+                "failed_records": 0,
+                "success_rate": 200,
+                "duration": -30,
+                "records_per_second": 0,
+                "completed_at": "2025-03-26 15:51:55"
+            }
+        ]
+    },
+    "message": "Employee Import Statistics"
+}
+```
 
 ## 6. Salary Update Logs
 
