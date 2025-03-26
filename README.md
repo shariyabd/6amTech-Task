@@ -1909,10 +1909,169 @@ Thanks,
   During the import process, if there is an update to an employee's salary, the system tracks both the old and new salary values.
 
 - **Salary Logs Endpoint (List View):**  
-  `GET http://127.0.0.1:8000/api/v1/employees/salery-logs`
+  `GET http://127.0.0.1:8000/api/v1/salery-log`
 
 This endpoint provides a list view of the salary update logs.
-
+- **Response:**
+```{
+    "success": true,
+    "data": {
+        "data": [
+            {
+                "id": 1,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 2,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 3,
+                "employee_id": 50,
+                "old_salary": "94928.00",
+                "new_salary": "216635.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 4,
+                "employee_id": 50,
+                "old_salary": "94928.00",
+                "new_salary": "216635.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 5,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            },
+            {
+                "id": 6,
+                "employee_id": 50,
+                "old_salary": "216635.00",
+                "new_salary": "94928.00",
+                "employee": {
+                    "id": 50,
+                    "name": "Jacob Thomas",
+                    "salary": 94928,
+                    "team_id": 19,
+                    "organization_id": 10,
+                    "organization": {
+                        "id": 10,
+                        "name": "CloudNet",
+                        "industry": "Cloud Computing",
+                        "location": "Austin"
+                    },
+                    "team": {
+                        "id": 19,
+                        "name": "Customer Relations",
+                        "department": "Support"
+                    }
+                }
+            }
+        ],
+        "meta": {
+            "current_page": 1,
+            "last_page": 1,
+            "total": 6,
+            "per_page": 15
+        }
+    },
+    "message": " Salery Log List"
+}
+```
 ---
 ```
 
