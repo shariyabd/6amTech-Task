@@ -1768,7 +1768,7 @@ This documentation outlines the process of generating, importing, and tracking e
 
 
 
-# Employee Import Summary Mail To Admin 
+## Employee Import Summary Mail Format 
 
 **Import Job #12345** has been completed.  
 
