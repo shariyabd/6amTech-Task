@@ -6,12 +6,14 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Features](#features)
- - [API Management with Sanctum](#api-management-with-sanctum)
+  - [API Management with Sanctum](#api-management-with-sanctum)
+  - [Role-Based Access Control and Authentication](#role-based-access-control-and-authentication)
   - [Eloquent Relationships & Data Aggregation](#eloquent-relationships--data-aggregation)
   - [Event-Driven Architecture & Background Processing](#event-driven-architecture--background-processing)
   - [PDF Reporting Package](#pdf-reporting-package)
   - [Performance Optimization](#performance-optimization)
 - [API Documentation](#api-documentation)
+  - [Role and Access](#role-and-access)
   - [Authentication](#authentication)
     - [Register](#register)
     - [Login](#login)
@@ -20,9 +22,11 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
   - [Teams](#teams)
   - [Employees](#employees)
   - [Reports](#reports)
+  - [Employee Data Import & Salary Update Logs](#employee-data-import--salary-update-logs)
 - [Testing](#testing)
 - [Performance Monitoring](#performance-monitoring)
 - [Contributing](#contributing)
+
 
 ---
 
@@ -105,6 +109,14 @@ QUEUE_CONNECTION=database
 ---
 
 ## Features
+### Role-Based Access Control and Authentication
+### API Management with Sanctum
+### Eloquent Relationships & Data Aggregation
+### Event-Driven Architecture & Background Processing
+### PDF Reporting Package
+### Performance Optimization And Monitoring 
+
+
 ### API Management with Sanctum
 A comprehensive RESTful API with Laravel Sanctum authentication and role-based access control:
 - Complete CRUD operations for organizations, teams, and employees.
@@ -113,6 +125,26 @@ A comprehensive RESTful API with Laravel Sanctum authentication and role-based a
 - API versioning support.
 
 API endpoints can be accessed using the appropriate authentication tokens and follow RESTful conventions.
+
+### Role-Based Access Control and Authentication
+
+**Role-Based Access:**
+
+- **Admin:**  
+  Full access to organizations, teams, employees, and reports (reports are view-only).
+
+- **Manager:**  
+  Restricted access with full permissions only for employees and limited access for teams.
+
+**Authentication:**
+
+- Endpoints for user registration, login, and logout.
+- Uses Laravel Sanctum for secure API token management.
+
+**Default Role:**
+
+- If no `role_id` is provided during registration, the system assigns the default role (Manager).
+
 ### Eloquent Relationships & Data Aggregation
 The system implements advanced Eloquent relationships between Organizations, Teams, and Employees:
 - **Organizations:** Can have multiple teams.
@@ -125,21 +157,6 @@ The system implements advanced Eloquent relationships between Organizations, Tea
 3. Custom Eloquent scopes for filtering employees by start date
 4. Optimized queries for large datasets
 
-**Usage:**
-```php
-// Get organization with teams and employees
-$organization = Organization::with(['teams.employees'])->find($id);
-
-// Get average salary per team
-$teamSalaryReport = Team::withAvgSalary()->get();
-
-// Get total employees per organization
-$organizationEmployeeCount = Organization::withEmployeeCount()->get();
-
-// Filter employees by start date
-$recentEmployees = Employee::startedAfter('2023-01-01')->get();
-```
-
 ### Event-Driven Architecture & Background Processing
 The system implements Laravel's event system for various operations:
 - JSON employee data import processing in the background.
@@ -148,15 +165,6 @@ The system implements Laravel's event system for various operations:
 - Error handling and user notifications.
 - Event-based salary update logging.
 
-**Usage:**
-```php
-// Import employees from JSON
-$importer = new EmployeeImporter($jsonData);
-EmployeeImportEvent::dispatch($importer);
-
-// The system will process the import in the background and notify users of progress
-```
-
 ### PDF Reporting Package
 A custom Laravel package for generating PDF employee reports:
 - Reusable Laravel package structure.
@@ -164,16 +172,6 @@ A custom Laravel package for generating PDF employee reports:
 - Multiple export options.
 - Easy integration with the main application.
 
-**Usage:**
-```php
-// Generate PDF employee report
-$report = EmployeeReportPDF::create()
-    ->forTeam($teamId)
-    ->withSalaryData()
-    ->generate();
-
-return response()->download($report);
-```
 
 ### Performance Optimization
 Database and system optimizations for handling large datasets:
@@ -181,13 +179,33 @@ Database and system optimizations for handling large datasets:
 - Query optimization techniques.
 - Laravel Telescope integration for monitoring.
 - Performance benchmarking tools.
-
----
+- 
 
 ## API Documentation
 
 **Version:** v1  
 **Base URL:** https://your-domain.com/api/v1
+## Role Information
+
+- **Admin:** id 1  
+- **Manager:** id 2  
+
+*Default Role:* Assigned to every user if they don't provide the `role_id`.
+
+---
+
+## Access Permissions
+
+- **Organization, Team, Employee, Report:**  
+  - **Admin** has full access of organization, team, employee, and report (report is view-only), including add, edit, update, view, delete, and list.
+  
+- **Employee:**  
+  - **Manager** has full access to employee, including add, edit, update, view, delete, and list.
+  
+- **Team:**  
+  - **Manager** can view only the team list and a single team.
+  
+- *(Additional Manager permissions incomplete in the provided info: "Manager have")*
 
 ### Authentication
 **Base URL:** https://your-domain.com/api/v1/auth
@@ -1001,7 +1019,10 @@ DELETE /api/v1/team/{id}
 _All endpoints in this section require authentication._
 
 - **List Employees:**  
-  **Endpoint:** `GET /api/v1/employees`  
+  **Endpoint:** 
+```
+GET /api/v1/employees
+``` 
   **Query Parameters:**  
   - `per_page` (optional): Number of employees per page (default: 15).  
   - `start_date` (optional): Filter employees by start date.  
@@ -1010,79 +1031,316 @@ _All endpoints in this section require authentication._
 
   **Response:**
   ```json
-  {
+ {
+    "success": true,
     "data": {
-      "current_page": 1,
-      "data": [
-        {
-          "id": 1,
-          "name": "Employee One",
-          "salary": 5000,
-          "team": { "id": 1, "name": "Team A" },
-          "organization": { "id": 1, "name": "Organization One" }
-        }
-      ],
-      "total": 1
-    },
-    "message": "Employee List"
-  }
+        "data": [
+            {
+                "id": 1,
+                "name": "Michael Lee",
+                "email": "michael.lee@company.org",
+                "team_id": 3,
+                "organization_id": 9,
+                "salary": 244168,
+                "start_date": "2024-07-30T00:00:00.000000Z",
+                "position": "Administrative Assistant",
+                "created_at": "2025-03-26T05:16:12.000000Z",
+                "updated_at": "2025-03-26T05:16:12.000000Z",
+                "team": {
+                    "id": 3,
+                    "name": "Risk Management",
+                    "department": "Finance"
+                },
+                "organization": {
+                    "id": 9,
+                    "name": "BuildTech",
+                    "industry": "Construction",
+                    "location": "Denver"
+                }
+            },
+            {
+                "id": 2,
+                "name": "Isabella Wright",
+                "email": "isabella.wright@business.io",
+                "team_id": 7,
+                "organization_id": 6,
+                "salary": 51206,
+                "start_date": "2022-04-12T00:00:00.000000Z",
+                "position": "Senior Software Engineer",
+                "created_at": "2025-03-26T05:16:12.000000Z",
+                "updated_at": "2025-03-26T05:16:12.000000Z",
+                "team": {
+                    "id": 7,
+                    "name": "Human Resources",
+                    "department": "HR"
+                },
+                "organization": {
+                    "id": 6,
+                    "name": "Foodies",
+                    "industry": "Food & Beverage",
+                    "location": "Los Angeles"
+                }
+            },
+            {
+                "id": 3,
+                "name": "James Moore",
+                "email": "james.moore@business.io",
+                "team_id": 5,
+                "organization_id": 9,
+                "salary": 199082,
+                "start_date": "2024-10-23T00:00:00.000000Z",
+                "position": "Accounting Manager",
+                "created_at": "2025-03-26T05:16:12.000000Z",
+                "updated_at": "2025-03-26T05:16:12.000000Z",
+                "team": {
+                    "id": 5,
+                    "name": "Research & Development",
+                    "department": "Innovation"
+                },
+                "organization": {
+                    "id": 9,
+                    "name": "BuildTech",
+                    "industry": "Construction",
+                    "location": "Denver"
+                }
+            }
+        ],
+        "meta": {
+            "current_page": 1,
+            "last_page": 395,
+            "total": 1184,
+            "per_page": 3
+        },
+        "performance": {
+            "label": "Employee Index",
+            "execution_time": "50.36ms",
+            "total_queries": 6,
+            "queries": [
+                {
+                    "query": "select * from `cache` where `key` in (?)",
+                    "bindings": [
+                        "employees_page_1_per_page_3_filters_de1b6378305762e355588386e8c59e24"
+                    ],
+                    "time": 0.76
+                },
+                {
+                    "query": "select count(*) as aggregate from `employees`",
+                    "bindings": [],
+                    "time": 2.75
+                },
+                {
+                    "query": "select * from `employees` limit 3 offset 0",
+                    "bindings": [],
+                    "time": 0.75
+                },
+                {
+                    "query": "select id,name,department from `teams` where `teams`.`id` in (3, 5, 7)",
+                    "bindings": [],
+                    "time": 1.51
+                },
+                {
+                    "query": "select id, name, industry,location from `organizations` where `organizations`.`id` in (6, 9)",
+                    "bindings": [],
+                    "time": 1.35
+                },
+                {
+                    "query": "insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)",
+                    "bindings": [
+                        1742970635,
+                        "employees_page_1_per_page_3_filters_de1b6378305762e355588386e8c59e24","O:42:\"Illuminate\\Pagination\\LengthAwarePaginator\":11:{s:8:\"
   ```
 
 - **Create Employee:**  
-  **Endpoint:** `POST /api/v1/employee`  
-  **Request Body:**
+  **Endpoint:** 
+```
+POST /api/v1/employee`
+```
+**HTTP Method:**  
+`POST`
+
+**Request Body Fields:**
+
+- **name**  
+  - **Type:** string  
+  - **Required:** Yes  
+
+- **email**  
+  - **Type:** string (email format)  
+  - **Required:** Yes  
+
+- **team_id**  
+  - **Type:** integer  
+  - **Required:** Yes  
+
+- **organization_id**  
+  - **Type:** integer  
+  - **Required:** Yes  
+
+- **salary**  
+  - **Type:** numeric  
+  - **Required:** Yes  
+
+- **start_date**  
+  - **Type:** date  
+  - **Required:** Yes  
+
+- **position**  
+  - **Type:** string  
+  - **Required:** No  
+
+**Example Request Body:**
+ 
   ```json
-  {
-    "name": "Employee One",
-    "email": "employee@example.com",
-    "salary": 5000,
-    "start_date": "2023-01-01",
-    "team_id": 1,
-    "organization_id": 1
-  }
+{
+    "name" : "Shariya Shuvo",
+    "email" : "shariya@gmail.com.com",
+    "team_id" : "6",
+    "organization_id" : "9",
+    "salary" : "40000",
+    "start_date" : "23-03-2025"
+}
   ```
   **Response:**
   ```json
-  {
+{
+    "success": true,
     "data": {
-      "id": 1,
-      "name": "Employee One",
-      "email": "employee@example.com",
-      "salary": 5000,
-      "start_date": "2023-01-01",
-      "team_id": 1,
-      "organization_id": 1
+        "employee": {
+            "name": "Shariya Shuvo",
+            "email": "shariya@gmail.com.com",
+            "team_id": "6",
+            "organization_id": "9",
+            "salary": 40000,
+            "start_date": "2025-03-23T00:00:00.000000Z",
+            "updated_at": "2025-03-26T06:34:02.000000Z",
+            "created_at": "2025-03-26T06:34:02.000000Z",
+            "id": 1185
+        },
+        "performance": {
+            "label": "Employee Store",
+            "execution_time": "188.55ms",
+            "total_queries": 3,
+            "queries": [
+                {
+                    "query": "insert into `employees` (`name`, `email`, `team_id`, `organization_id`, `salary`, `start_date`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?)",
+                    "bindings": [
+                        "Shariya Shuvo",
+                        "shariya@gmail.com.com",
+                        "6",
+                        "9",
+                        "40000",
+                        "2025-03-23 00:00:00",
+                        "2025-03-26 06:34:02",
+                        "2025-03-26 06:34:02"
+                    ],
+                    "time": 15.7
+                },
+                {
+                    "query": "select * from `cache` where `key` in (?)",
+                    "bindings": [
+                        "employee_cache_keys"
+                    ],
+                    "time": 0.66
+                },
+                {
+                    "query": "delete from `cache` where `key` in (?, ?)",
+                    "bindings": [
+                        "employee_cache_keys",
+                        "illuminate:cache:flexible:created:employee_cache_keys"
+                    ],
+                    "time": 0.76
+                }
+            ]
+        }
     },
     "message": "Employee Created Successfully"
-  }
+}
   ```
 
 - **Get Employee Details:**  
-  **Endpoint:** `GET /api/v1/employee/{id}`  
+  **Endpoint:** 
+```
+GET /api/v1/employee/{id}
+```  
   **Response:**
   ```json
   {
+    "success": true,
     "data": {
-      "id": 1,
-      "name": "Employee One",
-      "email": "employee@example.com",
-      "salary": 5000,
-      "start_date": "2023-01-01",
-      "team": { "id": 1, "name": "Team A" },
-      "organization": { "id": 1, "name": "Organization One" }
-    },
-    "message": "Single Employee Data"
-  }
+        "employee": {
+            "id": 10,
+            "name": "Robert Hall",
+            "email": "robert.hall@corp.net",
+            "team_id": 4,
+            "organization_id": 3,
+            "salary": 79644,
+            "start_date": "2021-09-08T00:00:00.000000Z",
+            "position": "Product Manager",
+            "created_at": "2025-03-26T05:16:12.000000Z",
+            "updated_at": "2025-03-26T05:16:12.000000Z",
+            "team": {
+                "id": 4,
+                "name": "Customer Support",
+                "department": "Support"
+            },
+            "organization": {
+                "id": 3,
+                "name": "HealthPlus",
+                "industry": "Healthcare",
+                "location": "Chicago"
+            }
+        },
+        "performance": {
+            "label": "Employee Show",
+            "execution_time": "27.17ms",
+            "total_queries": 5,
+            "queries": [
+                {
+                    "query": "select * from `cache` where `key` in (?)",
+                    "bindings": [
+                        "employee_10"
+                    ],
+                    "time": 0.6
+                },
+                {
+                    "query": "select * from `employees` where `employees`.`id` = ? limit 1",
+                    "bindings": [
+                        "10"
+                    ],
+                    "time": 1.05
+                },
+                {
+                    "query": "select id,name,department from `teams` where `teams`.`id` in (4)",
+                    "bindings": [],
+                    "time": 0.7
+                },
+                {
+                    "query": "select id, name, industry,location from `organizations` where `organizations`.`id` in (3)",
+                    "bindings": [],
+                    "time": 0.64
+                },
+                {
+                    "query": "insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)",
+                    "bindings": [
+                        1742972736,
+                        "employee_10","O:19:\"App\\Models\\Employee\":30:{s:13:\"
   ```
 
 - **Update Employee:**  
-  **Endpoint:** `PATCH /api/v1/employee/{id}`  
+  **Endpoint:** 
+```
+PATCH /api/v1/employee/{id}
+```  
   **Request Body:**
   ```json
-  {
-    "name": "Updated Employee Name",
-    "salary": 5500
-  }
+{
+    "name" : "Shariya Shuvo Promoted",
+    "email" : "shariya@gmail.com.com",
+    "team_id" : "6",
+    "organization_id" : "9",
+    "salary" : "45000",
+    "start_date" : "23-03-2025"
+}
   ```
   **Response:**
   ```json
@@ -1097,69 +1355,393 @@ _All endpoints in this section require authentication._
   ```
 
 - **Delete Employee:**  
-  **Endpoint:** `DELETE /api/v1/employee/{id}`  
+  **Endpoint:** 
+```
+DELETE /api/v1/employee/{id}
+```
   **Response:**
   ```json
-  {
-    "data": {},
-    "message": "Employee has been deleted"
-  }
+{
+    "success": true,
+    "data": {
+        "performance": {
+            "label": "Employee Delete",
+            "execution_time": "32.89ms",
+            "total_queries": 5,
+            "queries": [
+                {
+                    "query": "select * from `employees` where `employees`.`id` = ? limit 1",
+                    "bindings": [
+                        "10"
+                    ],
+                    "time": 1.05
+                },
+                {
+                    "query": "delete from `employees` where `id` = ?",
+                    "bindings": [
+                        10
+                    ],
+                    "time": 9
+                },
+                {
+                    "query": "delete from `cache` where `key` in (?, ?)",
+                    "bindings": [
+                        "employee_10",
+                        "illuminate:cache:flexible:created:employee_10"
+                    ],
+                    "time": 9.7
+                },
+                {
+                    "query": "select * from `cache` where `key` in (?)",
+                    "bindings": [
+                        "employee_cache_keys"
+                    ],
+                    "time": 1.07
+                },
+                {
+                    "query": "delete from `cache` where `key` in (?, ?)",
+                    "bindings": [
+                        "employee_cache_keys",
+                        "illuminate:cache:flexible:created:employee_cache_keys"
+                    ],
+                    "time": 0.49
+                }
+            ]
+        }
+    },
+    "message": "Employee Deleted Successfully"
+}
   ```
 
 ### Reports
 _All endpoints in this section require authentication._
 
 - **Average Salary per Team:**  
-  **Endpoint:** `GET /api/v1/reports/teams/salary`  
+  **Endpoint:** 
+```
+GET/api/v1/reports/teams/salary
+```
   **Description:**  
   Calculates the average salary per team and returns a summary with overall averages.
 
   **Response:**
   ```json
   {
+    "success": true,
     "data": {
-      "teams": [
-        {
-          "id": 1,
-          "name": "Team A",
-          "average_salary": 5000.00
+        "teams": [
+            {
+                "id": 1,
+                "name": "Software Development",
+                "average_salary": 126871.32
+            },
+            {
+                "id": 2,
+                "name": "Marketing",
+                "average_salary": 131474.41
+            },
+            {
+                "id": 3,
+                "name": "Risk Management",
+                "average_salary": 130017.28
+            },
+            {
+                "id": 4,
+                "name": "Customer Support",
+                "average_salary": 129997.04
+            },
+            {
+                "id": 5,
+                "name": "Research & Development",
+                "average_salary": 121824.32
+            },
+            {
+                "id": 6,
+                "name": "Sales",
+                "average_salary": 115521
+            },
+            {
+                "id": 7,
+                "name": "Human Resources",
+                "average_salary": 113592.73
+            },
+            {
+                "id": 8,
+                "name": "Data Analytics",
+                "average_salary": 115280.84
+            },
+            {
+                "id": 9,
+                "name": "Public Relations",
+                "average_salary": 128785.62
+            },
+            {
+                "id": 10,
+                "name": "Cybersecurity",
+                "average_salary": 123022.14
+            },
+            {
+                "id": 11,
+                "name": "Cloud Infrastructure",
+                "average_salary": 120708.83
+            },
+            {
+                "id": 12,
+                "name": "Product Management",
+                "average_salary": 114652.6
+            },
+            {
+                "id": 13,
+                "name": "Operations",
+                "average_salary": 122283.56
+            },
+            {
+                "id": 14,
+                "name": "IT Support",
+                "average_salary": 129984.66
+            },
+            {
+                "id": 15,
+                "name": "Logistics",
+                "average_salary": 115298.11
+            },
+            {
+                "id": 16,
+                "name": "Legal Compliance",
+                "average_salary": 112009.32
+            },
+            {
+                "id": 17,
+                "name": "Business Intelligence",
+                "average_salary": 117018.05
+            },
+            {
+                "id": 18,
+                "name": "Financial Planning",
+                "average_salary": 135090.73
+            },
+            {
+                "id": 19,
+                "name": "Customer Relations",
+                "average_salary": 129644.79
+            },
+            {
+                "id": 20,
+                "name": "UX/UI Design",
+                "average_salary": 130600.45
+            }
+        ],
+        "summary": {
+            "total_teams": 20,
+            "overall_average": 123183.89
         }
-      ],
-      "summary": {
-        "total_teams": 1,
-        "overall_average": 5000.00
-      }
     },
     "message": "Avarage Salery Per Employee"
-  }
+}
   ```
 
 - **Employees per Organization:**  
-  **Endpoint:** `GET /api/v1/reports/organizations/headcount`  
+  **Endpoint:** 
+
+```
+GET /api/v1/reports/organizations/headcount
+```
   **Description:**  
   Returns the count of employees per organization along with a summary of total employees and organizations.
 
   **Response:**
   ```json
-  {
+{
+    "success": true,
     "data": {
-      "organization": [
-        {
-          "id": 1,
-          "name": "Organization One",
-          "employee_count": 10
+        "organization": [
+            {
+                "id": 1,
+                "name": "TechCorp",
+                "employee_count": 188
+            },
+            {
+                "id": 2,
+                "name": "FinSolve",
+                "employee_count": 106
+            },
+            {
+                "id": 3,
+                "name": "HealthPlus",
+                "employee_count": 111
+            },
+            {
+                "id": 4,
+                "name": "EduNation",
+                "employee_count": 133
+            },
+            {
+                "id": 5,
+                "name": "GreenEnergy",
+                "employee_count": 109
+            },
+            {
+                "id": 6,
+                "name": "Foodies",
+                "employee_count": 49
+            },
+            {
+                "id": 7,
+                "name": "AutoMotiveX",
+                "employee_count": 111
+            },
+            {
+                "id": 8,
+                "name": "RetailGiant",
+                "employee_count": 123
+            },
+            {
+                "id": 9,
+                "name": "BuildTech",
+                "employee_count": 132
+            },
+            {
+                "id": 10,
+                "name": "CloudNet",
+                "employee_count": 122
+            }
+        ],
+        "summary": {
+            "total_organizations": 10,
+            "total_employees": 1184
         }
-      ],
-      "summary": {
-        "total_organizations": 1,
-        "total_employees": 10
-      }
     },
     "message": "Organization Wise Employess"
+}
+  ```
+
+
+# Employee Data Import & Salary Update Logs
+
+This documentation outlines the process of generating, importing, and tracking employee data as well as monitoring salary updates.
+
+---
+
+## 1. Employee Data Generation
+
+- **Endpoint:**  
+  `GET http://127.0.0.1:8000/api/v1/import`
+
+- **Description:**  
+  This endpoint generates 50,000 employee records under various teams and exports the data to a JSON file.
+
+- **Output File Location:**  
+  `public\exports\employee_data.json`
+
+---
+
+## 2. Employee Data Import (Event-Driven)
+
+- **Endpoint:**  
+  `GET http://127.0.0.1:8000/api/v1/employees/import`
+
+- **Description:**  
+  After generating the JSON file, hit this endpoint to insert the employee data into the system using an event-driven architecture (event, listener, job, queue).
+
+- **Response Example:**
+  ```json
+  {
+      "success": true,
+      "data": {
+          "progress_url": "http://127.0.0.1:8000/api/v1/employees/import/status/5"
+      },
+      "message": "Your import has been queued and will be processed shortly"
   }
   ```
 
+- **Process Tracking:**  
+  The import process tracks the status of the job as it is processed.
+
 ---
+
+## 3. Import Status Tracking
+
+- **Endpoint:**  
+  `GET http://127.0.0.1:8000/api/v1/employees/import/status/5`
+
+- **Description:**  
+  Retrieve the current status of the import job by its ID.
+
+- **Response Example:**
+  ```json
+  {
+      "success": true,
+      "data": {
+          "id": 5,
+          "user_id": 1,
+          "file_path": "imports/fnVlUDF2FPaY8UR7YXNMOxBshib04HFZCcuAGhZl.json",
+          "status": "completed",
+          "job_id": "29d3f47a-40e3-4d50-b93e-f97e911dbe23",
+          "total_records": 1000,
+          "processed_records": 2000,
+          "failed_records": 0,
+          "error_message": null,
+          "created_at": "2025-03-26T05:39:59.000000Z",
+          "updated_at": "2025-03-26T05:40:47.000000Z"
+      },
+      "message": "Import Status"
+  }
+  ```
+
+- **Progress Notification:**  
+  The system sends progress notifications after every 10% of records processed.
+
+---
+
+## 4. Import Completion & Failure Notifications
+
+- **Notification Endpoints:**
+  - **Success Notification:**  
+    `GET http://127.0.0.1:8000/api/v1/employees/import/notification/1`
+    
+  - **Failure Notification:**  
+    `GET http://127.0.0.1:8000/api/v1/employees/import/notification/1`
+
+- **Description:**  
+  Upon completing the import process (or encountering failures), the system notifies the user using the above endpoint.
+
+---
+
+## 5. Import Statistics Summary Email
+
+- **Trigger Condition:**  
+  If the import job completes with more than 1000 total records **or** if there are 10 or more failed records, the admin receives an import statistics summary email.
+
+- **Admin Email:**  
+  `shariya873@gmail.com`
+
+- **Statistics Endpoint:**  
+  `GET http://127.0.0.1:8000/api/v1/employees/import/stattiscits/1`
+
+- **Response Object Keys:**
+  - `user_name`
+  - `import_status`
+  - `total_records`
+  - `processed_records`
+  - `failed_records`
+  - `success_rate`
+  - `duration`
+  - `records_per_second`
+
+---
+
+## 6. Salary Update Logs
+
+- **Description:**  
+  During the import process, if there is an update to an employee's salary, the system tracks both the old and new salary values.
+
+- **Salary Logs Endpoint (List View):**  
+  `GET http://127.0.0.1:8000/api/v1/employees/salery-logs`
+
+This endpoint provides a list view of the salary update logs.
+
+---
+```
 
 ## Testing
 

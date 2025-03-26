@@ -4,11 +4,11 @@ namespace App\Listeners;
 
 use App\Models\SalaryChangeLog;
 use Illuminate\Support\Facades\Log;
-use App\Events\EmployeeSalaryUpdated;
+use App\Events\EmployeeSalaryUpdatedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class LogSalaryChange
+class LogSalaryChangeListener
 {
     /**
      * Create the event listener.
@@ -21,7 +21,7 @@ class LogSalaryChange
     /**
      * Handle the event.
      */
-    public function handle(EmployeeSalaryUpdated $event)
+    public function handle(EmployeeSalaryUpdatedEvent $event)
     {
         Log::info("Salary updated for employee: {$event->employee->name}", [
             'employee_id' => $event->employee->id,

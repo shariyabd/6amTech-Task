@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\ImportJob;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class EmployeeImportRequested
+class EmployeeImportCompletedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,7 +19,7 @@ class EmployeeImportRequested
      */
 
     public $import_job;
-    public function __construct(ImportJob $import_job)
+    public function __construct($import_job)
     {
         $this->import_job = $import_job;
     }
@@ -33,7 +32,7 @@ class EmployeeImportRequested
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('imports'),
+            new PrivateChannel('channel-name'),
         ];
     }
 }

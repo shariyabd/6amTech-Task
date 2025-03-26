@@ -7,11 +7,11 @@ use App\Models\ImportStatistic;
 use App\Mail\ImportSummaryReport;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Events\EmployeeImportCompleted;
+use App\Events\EmployeeImportCompletedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class HandleImportCompletion implements ShouldQueue
+class HandleImportCompletionListener implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -33,7 +33,7 @@ class HandleImportCompletion implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(EmployeeImportCompleted $event): void
+    public function handle(EmployeeImportCompletedEvent $event): void
     {
         $importJob = $event->import_job;
 

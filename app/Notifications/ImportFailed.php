@@ -12,11 +12,11 @@ class ImportFailed extends Notification
 {
     use Queueable;
 
-    public $importJob;
+    public $import_job;
 
     public function __construct(ImportJob $importJob)
     {
-        $this->importJob = $importJob;
+        $this->import_job = $importJob;
     }
 
     public function via($notifiable)
@@ -29,19 +29,19 @@ class ImportFailed extends Notification
         return (new MailMessage)
             ->subject('Employee Import Failed')
             ->line('Unfortunately, your employee data import has failed.')
-            ->line("Error: {$this->importJob->error_message}")
-            ->line("Total records: {$this->importJob->total_records}")
-            ->line("Processed before failure: {$this->importJob->processed_records}")
-            ->action('View Details', route('import.status', $this->importJob->id));
+            ->line("Error: {$this->import_job->error_message}")
+            ->line("Total records: {$this->import_job->total_records}")
+            ->line("Processed before failure: {$this->import_job->processed_records}")
+            ->action('View Details', url(route('import.status', $this->import_job->id)));
     }
 
     public function toArray($notifiable)
     {
         return [
-            'import_job_id' => $this->importJob->id,
+            'import_job_id' => $this->import_job->id,
             'status'        => 'failed',
             'message'       => 'Employee import failed',
-            'error'         => $this->importJob->error_message
+            'error'         => $this->import_job->error_message
         ];
     }
 }

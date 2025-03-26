@@ -7,10 +7,10 @@ use App\Models\ImportJob;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\ImportFailed;
 use Illuminate\Support\Facades\Log;
-use App\Events\EmployeeSalaryUpdated;
+use App\Events\EmployeeSalaryUpdatedEvent;
 use App\Notifications\ImportProgress;
 use App\Notifications\ImportCompleted;
-use App\Events\EmployeeImportCompleted;
+use App\Events\EmployeeImportCompletedEvent;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -64,7 +64,7 @@ class ProcessEmployeeImport implements ShouldQueue
             $this->import_job->user->notify(new ImportCompleted($this->import_job));
 
             // Dispatch completion event
-            event(new EmployeeImportCompleted($this->import_job));
+            event(new EmployeeImportCompletedEvent($this->import_job));
         } catch (\Exception $e) {
             // Log the error
             Log::error("Import failed: " . $e->getMessage(), [
@@ -116,7 +116,7 @@ class ProcessEmployeeImport implements ShouldQueue
 
             // If salary was updated, dispatch the event
             if ($oldSalary !== null && $employee->salary !== $oldSalary) {
-                event(new EmployeeSalaryUpdated($employee, $oldSalary, $employee->salary));
+                event(new EmployeeSalaryUpdatedEvent($employee, $oldSalary, $employee->salary));
             }
 
             DB::commit();

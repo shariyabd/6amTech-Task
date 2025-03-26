@@ -3,11 +3,11 @@
 namespace App\Listeners;
 
 use App\Jobs\ProcessEmployeeImport;
-use App\Events\EmployeeImportRequested;
+use App\Events\EmployeeImportRequestedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class QueueEmployeeImport implements ShouldQueue
+class QueueEmployeeImportListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -20,7 +20,7 @@ class QueueEmployeeImport implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(EmployeeImportRequested $event)
+    public function handle(EmployeeImportRequestedEvent $event)
     {
         ProcessEmployeeImport::dispatch($event->import_job);
     }

@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Events\EmployeeImportRequested;
+use App\Events\EmployeeImportRequestedEvent;
 
 
 class EmployeeImportController extends BaseController
@@ -36,10 +36,10 @@ class EmployeeImportController extends BaseController
             'failed_records' => 0,
         ]);
 
-        event(new EmployeeImportRequested($import_job));
+        event(new EmployeeImportRequestedEvent($import_job));
 
         $result = [
-            'progress_url' => route('import.status', $this->importJob->id)
+            'progress_url' => route('import.status', $import_job->id)
         ];
         return $this->sendResponse($result, 'Your import has been queued and will be processed shortly');
     }

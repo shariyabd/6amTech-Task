@@ -2,15 +2,15 @@
 
 namespace App\Providers;
 
-use App\Listeners\LogSalaryChange;
+use App\Listeners\LogSalaryChangeListener;
 use App\Services\PerformanceMonitor;
-use App\Events\EmployeeSalaryUpdated;
+use App\Events\EmployeeSalaryUpdatedEvent;
 use Illuminate\Support\Facades\Event;
-use App\Listeners\QueueEmployeeImport;
-use App\Events\EmployeeImportCompleted;
-use App\Events\EmployeeImportRequested;
+use App\Listeners\QueueEmployeeImportListener;
+use App\Events\EmployeeImportCompletedEvent;
+use App\Events\EmployeeImportRequestedEvent;
 use Illuminate\Support\ServiceProvider;
-use App\Listeners\HandleImportCompletion;
+use App\Listeners\HandleImportCompletionListener;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,8 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(EmployeeImportRequested::class, QueueEmployeeImport::class);
-        Event::listen(EmployeeImportCompleted::class, HandleImportCompletion::class);
-        Event::listen(EmployeeSalaryUpdated::class, LogSalaryChange::class);
+        Event::listen(EmployeeImportRequestedEvent::class, QueueEmployeeImportListener::class);
+        Event::listen(EmployeeImportCompletedEvent::class, HandleImportCompletionListener::class);
+        Event::listen(EmployeeSalaryUpdatedEvent::class, LogSalaryChangeListener::class);
     }
 }
