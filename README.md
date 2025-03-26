@@ -109,12 +109,12 @@ QUEUE_CONNECTION=database
 ---
 
 ## Features
-### Role-Based Access Control and Authentication
-### API Management with Sanctum
-### Eloquent Relationships & Data Aggregation
-### Event-Driven Architecture & Background Processing
-### PDF Reporting Package
-### Performance Optimization And Monitoring 
+- Role-Based Access Control and Authentication
+- API Management with Sanctum
+- Eloquent Relationships & Data Aggregation
+- Event-Driven Architecture & Background Processing
+- PDF Reporting Package
+- Performance Optimization And Monitoring 
 
 
 ### API Management with Sanctum
