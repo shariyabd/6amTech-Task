@@ -26,7 +26,8 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
   - [Employee Data Import & Salary Update Logs](#employee-data-import--salary-update-logs)
 - [Testing](#testing)
 - [Performance Monitoring](#performance-monitoring)
-- [Contributing](#contributing)
+- [Api Collection](api-collection/)
+
 
 
 ---
@@ -2140,6 +2141,9 @@ Laravel Telescope is integrated for performance monitoring.
 - Check cache operations.
 
 ---
+## API Collection
+
+Download the Postman collection from [api-collection.json](api-collection.json) and import it into Postman.
 
 # Developer Note
 
