@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0b6bcf3acb264b9c06907b2207aa32d",
+    "content-hash": "28cf96cb953a720cbf80313b99c81689",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -8386,63 +8386,6 @@
             "time": "2024-10-09T05:16:32+00:00"
         },
         {
-            "name": "shariya/pdf-generator",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/shariyabd/pdf-generator.git",
-                "reference": "b62b63c5491fabf8bb8bf3474d24f11485066d30"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/shariyabd/pdf-generator/zipball/b62b63c5491fabf8bb8bf3474d24f11485066d30",
-                "reference": "b62b63c5491fabf8bb8bf3474d24f11485066d30",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "PdfGenerator": "Shariya\\PdfGenerator\\Facades\\PdfGenerator"
-                    },
-                    "providers": [
-                        "Shariya\\PdfGenerator\\Providers\\PdfGeneratorServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Shariya\\PdfGenerator\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "shariya"
-                }
-            ],
-            "description": "A simple pdf generator package",
-            "homepage": "https://github.com/:vendor_slug/:package_slug",
-            "keywords": [
-                "generator",
-                "laravel",
-                "pdf",
-                "shariya"
-            ],
-            "support": {
-                "issues": "https://github.com/shariyabd/pdf-generator/issues",
-                "source": "https://github.com/shariyabd/pdf-generator/tree/main"
-            },
-            "time": "2025-03-25T16:39:45+00:00"
-        },
-        {
             "name": "staabm/side-effects-detector",
             "version": "1.0.5",
             "source": {
@@ -8619,9 +8562,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "shariya/pdf-generator": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
