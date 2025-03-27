@@ -110,6 +110,7 @@ Configure queue processing:
 QUEUE_CONNECTION=database
 ```
 
+> **Note:** Before testing, generate the employee JSON file and import it. For details, refer to the [Employee Data Import & Salary Update Logs](#employee-data-import--salary-update-logs).
 ---
 
 ## Features
