@@ -11,7 +11,10 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./pdf-package"
+            "url": "./pdf-package",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {
