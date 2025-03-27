@@ -1792,10 +1792,10 @@ Failed records: {failed_records}
 
 ---
 
-## 5. Import Statistics Summary Email
+## 5. Import Statistics Summary Email Send To Logged In User
 
 - **Trigger Condition:**  
-  If the import job completes with more than 1000 total records **or** if there are 10 or more failed records, the admin receives an import statistics summary email.
+  If the import job completes with more than 100 total records **or** if there are 10 or more failed records, the admin receives an import statistics summary email.
 
 
 
@@ -2115,12 +2115,12 @@ php artisan test
 ```
 
 > **Note:** In the `ReportTest` class, I have written only two unit tests for report functionality:
-> - **Team Report Tests:**
->   - `it_can_get_average_salary_per_team`
->   - `it_handles_team_with_no_employees`
-> - **Organization Report Tests:**
->   - `it_can_get_employees_per_organization`
->   - `it_handles_organization_with_no_employees`
+ - **Team Report Tests:**
+   - `it_can_get_average_salary_per_team`
+   - `it_handles_team_with_no_employees`
+ - **Organization Report Tests:**
+   - `it_can_get_employees_per_organization`
+   - `it_handles_organization_with_no_employees`
 
 ---
 
