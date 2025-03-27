@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\v1\Auth\AuthController;
 use App\Http\Controllers\Api\v1\OrganizationController;
 use App\Http\Controllers\Api\v1\EmployeeImportController;
 use App\Http\Controllers\Api\v1\ImportStatisticController;
-use App\Http\Controllers\SaleryUpdateLogController;
+use App\Http\Controllers\Api\v1\SaleryUpdateLogController;
 
 Route::prefix('v1')->group(function () {
 
