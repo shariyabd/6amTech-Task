@@ -35,7 +35,7 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
 ---
 
 ## Requirements
-- **PHP 8.2** or higher
+- **PHP 8.3** or higher
 - **Laravel 11**
 - **MySQL 8.0+**
 - **Composer**
