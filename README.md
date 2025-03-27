@@ -35,10 +35,10 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
 ---
 
 ## Requirements
-- **PHP 8.2** or higher
+- **PHP 8.3** or higher
 - **Laravel 11**
 - **MySQL 8.0+**
-- **Composer**
+- **Composer 2.7** or higher
 
 ---
 
@@ -74,7 +74,8 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
    ```bash
    php artisan migrate --seed
    ```
-
+> **Note:** Since employee data is not being seeded, before testing, generate the employee JSON file and import it or add employee via API. For details, refer to the [Employee Data Import & Salary Update Logs](#employee-data-import--salary-update-logs).
+> 
 6. **Install and configure Laravel Telescope for performance monitoring:**
 
    ```bash
@@ -103,14 +104,14 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-### Queue Configuration
-Configure queue processing:
+### Queue Configuration  
+Configure queue processing:  
 
 ```dotenv
 QUEUE_CONNECTION=database
 ```
 
----
+
 
 ## Features
 - Role-Based Access Control and Authentication
