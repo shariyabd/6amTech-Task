@@ -69,7 +69,7 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
    php artisan key:generate
    ```
 
-5. **Run database migrations and seeders:**
+5. **Run database migrations and seeders:** (Before migrate configure database)
 
    ```bash
    php artisan migrate --seed
