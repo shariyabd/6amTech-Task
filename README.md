@@ -27,6 +27,8 @@ A comprehensive Laravel-based system for managing organizations, teams, and empl
 - [Testing](#testing)
 - [Performance Monitoring](#performance-monitoring)
 - [Api Collection](api-collection/)
+- [API Collection](#api-collection)
+
 
 
 
@@ -2142,8 +2144,8 @@ Laravel Telescope is integrated for performance monitoring.
 
 ---
 ## API Collection
-
-Download the Postman collection from [api-collection.json](api-collection.json) and import it into Postman.
+- [API Collection Folder](api-collection/)
+- [6amTechTask Postman Collection](api-collection/6amTechTask.postman_collection.json)
 
 # Developer Note
 
