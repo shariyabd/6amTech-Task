@@ -81,7 +81,6 @@ class ProcessEmployeeImport implements ShouldQueue
             // Notify user of failure
             $this->import_job->user->notify(new ImportFailed($this->import_job));
 
-            // Rethrow the exception if we want the job to be retried
             throw $e;
         }
     }
@@ -103,18 +102,18 @@ class ProcessEmployeeImport implements ShouldQueue
 
             // Update employee data
             $employee->fill([
-                'name' => $data['name'],
-                'email' => $data['email'] ?? null,
-                'team_id' => $data['team_id'] ?? null,
-                'organization_id' => $data['organization_id'] ?? null,
-                'salary' => $data['salary'] ?? null,
-                'start_date' => $data['start_date'] ?? null,
-                'position' => $data['position'] ?? null,
+                'name'              => $data['name'],
+                'email'             => $data['email'] ?? null,
+                'team_id'           => $data['team_id'] ?? null,
+                'organization_id'   => $data['organization_id'] ?? null,
+                'salary'            => $data['salary'] ?? null,
+                'start_date'        => $data['start_date'] ?? null,
+                'position'          => $data['position'] ?? null,
             ]);
 
             $employee->save();
 
-            // If salary was updated, dispatch the event
+            // If salary  updated, dispatch  event
             if ($oldSalary !== null && $employee->salary !== $oldSalary) {
                 event(new EmployeeSalaryUpdatedEvent($employee, $oldSalary, $employee->salary));
             }
@@ -126,7 +125,6 @@ class ProcessEmployeeImport implements ShouldQueue
             // Increment failed records counter
             $this->import_job->increment('failed_records');
 
-            // Log the specific error for this record
             Log::error("Failed to process employee record: " . $e->getMessage(), [
                 'data' => $data,
                 'exception' => $e
@@ -140,7 +138,6 @@ class ProcessEmployeeImport implements ShouldQueue
             $progress = ($this->import_job->processed_records / $this->import_job->total_records) * 100;
             $this->import_job->user->notify(new ImportProgress($this->import_job, $progress));
         } catch (\Exception $e) {
-            // Just log but don't fail the job if notification fails
             Log::error("Failed to send progress notification: " . $e->getMessage());
         }
     }

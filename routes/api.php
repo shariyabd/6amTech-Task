@@ -47,7 +47,8 @@ Route::prefix('v1')->group(function () {
                 Route::get('organizations/headcount', [ReportController::class, 'employess_per_organization'])->name('organizations.headcount');
                 Route::get('employee', [ReportController::class, 'employee_report'])->name('employee.report');
             });
-            //import data statistics
+
+            //statistics of import data
             Route::get('import-statistics', [ImportStatisticController::class, 'index']);
             //salery log report
             Route::get('salery-log', [SaleryUpdateLogController::class, 'index']);
@@ -62,9 +63,9 @@ Route::prefix('v1')->group(function () {
         // Routes accessible by both Admin and Manager
         Route::middleware('role:' . RoleType::ADMIN->value . ',' . RoleType::MANAGER->value)->group(function () {
 
-            // this route will generete json employess data
+            // generete json employess data
             Route::get('/import', function () {
-                return  generateSampleEmployeeData(10, 'exports/employee_data.json');
+                return  generateSampleEmployeeData(300, 'exports/employee_data.json');
             });
 
             // Team view (both admin and manager can view)
