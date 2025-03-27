@@ -1669,13 +1669,16 @@ GET /api/v1/reports/organizations/headcount
     "message": "Organization Wise Employess"
 }
   ```
+## Custom PDF Generator Pdf Package Link:
+```
+https://github.com/shariyabd/pdf-generator
+```
 ## Employees Organization Report Download As PDF:
-  **Endpoint:** 
 
+  **Endpoint:** 
 ```
 GET /api/v1/reports/employee
 ```
-
 **HTTP Method:**  
 `GET`
   **Description:**  
@@ -1683,13 +1686,16 @@ GET /api/v1/reports/employee
   
   **Usage**
 ```
-use Shariya\PdfGenerator\Facades\PdfGenerator;
+$result = [
+'total_organizations' => $organizations->count(),
+'report'              => $report,
+];
 
-return PdfGenerator::generateFromView(
-    'reports.employee-report',
-    ['result' => $result],
-    'employee_report_' . now()->format('Y-m-d') . '.pdf'
-);
+$pdf = Pdf::loadView('reports.employee-report', [
+    'result' => $result
+]);
+
+return $pdf->download('employee_report_' . now()->format('Y-m-d') . '.pdf');
 ```
 
 # Employee Data Import & Salary Update Logs
@@ -2135,6 +2141,35 @@ Laravel Telescope is integrated for performance monitoring.
 
 ---
 
-## Developer Note
+# Developer Note
 
+## Overview  
+This note outlines the limitations encountered during development and explains the workarounds implemented due to time constraints before project submission.
 
+## Known Issues & Workarounds
+
+### 1. Custom PDF Package Integration  
+- **Issue:**  
+  I developed a custom PDF package generator that worked flawlessly in the local environment. However, after pushing the package to GitHub and Packagist, I encountered the following error during installation:  
+
+  ```
+  Class "Shariya\PdfGenerator\Providers\PdfGeneratorServiceProvider" not found
+  ```
+
+- **Actions Taken:**  
+  I attempted several solutions to identify and resolve the issue, but due to the tight project deadline, I was unable to fully address it.
+
+- **Workaround:**  
+  To maintain PDF generation functionality, I integrated **Dompdf** into the project. My custom package link is still provided for reference and future improvement.
+
+### 2. Unit Testing  
+- **Issue:**  
+  Due to time constraints, I was only able to write unit tests for the report module.
+
+- **Actions Taken:**  
+  I focused on covering all critical functionalities as specified in the task requirements, even though the overall test coverage is not comprehensive.
+
+## Final Remarks  
+I acknowledge these limitations and plan to revisit them for further enhancements when more time is available. Thank you for your understanding and feedback.
+
+---
